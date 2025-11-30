@@ -1,0 +1,25 @@
+{
+  "name": "@zxiaosi/sdk",
+  "version": "0.1.2",
+  "description": "A micro frontend kit",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zxiaosi-team/fontend-sdk.git",
+    "directory": "sdk"
+  },
+  "license": "MIT",
+  "author": "zxiaosi",
+  "type": "module",
+  "main": "dist/cjs/index.cjs",
+  "module": "dist/esm/index.mjs",
+  "types": "dist/esm/index.d.mts",
+  "files": [],
+  "scripts": {},
+  "dependencies": {},
+  "devDependencies": {},
+  "peerDependencies": {},
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  }
+}
