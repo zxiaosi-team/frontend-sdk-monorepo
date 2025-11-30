@@ -10,13 +10,22 @@
   "license": "MIT",
   "author": "zxiaosi",
   "type": "module",
-  "main": "dist/cjs/index.cjs",
-  "module": "dist/esm/index.mjs",
-  "types": "dist/esm/index.d.mts",
-  "files": [],
-  "scripts": {},
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "rolldown.config.ts",
+    "tsconfig.json"
+  ],
+  "scripts": {
+    "build": "rolldown -c rolldown.config.ts --minify",
+    "dev": "rolldown -c rolldown.config.ts --watch"
+  },
   "dependencies": {},
   "devDependencies": {
+    "rolldown": "^1.0.0-beta.52",
+    "rolldown-plugin-dts": "^0.18.1",
     "typescript": "^5.9.3"
   },
   "peerDependencies": {},
