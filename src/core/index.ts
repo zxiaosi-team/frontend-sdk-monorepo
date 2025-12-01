@@ -10,7 +10,8 @@ class Sdk implements SdkBase {
   }
 
   mount(name: string) {
-    console.log('%c SDK mounted:', 'color: green; font-weight: bold;', name);
+    if (window[name]) return console.error(`SDK already exists - ${name}`);
+    console.log('%c SDK mounted:', 'color: green;', name);
 
     // 挂载到 Window 上
     this.name = name;
@@ -18,13 +19,11 @@ class Sdk implements SdkBase {
   }
 
   extend(name: string) {
-    // 继承实例属性
-    if (window[name]) {
-      console.log('%c SDK extended:', 'color: blue; font-weight: bold;', name);
-      Object.assign(this, window[name]); // 合并实例属性
-    } else {
-      console.error(`No SDK instance found on window with the name: ${name}`);
-    }
+    if (!window[name]) return console.error(`SDK not found ${name}`);
+    console.log('%c SDK extended:', 'color: blue', name);
+
+    // 合并实例属性
+    Object.assign(this, window[name]);
   }
 }
 
