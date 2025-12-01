@@ -1,8 +1,8 @@
-import type { SdkBase } from '@/types';
+import type { Plugin, PluginOptions, SdkResult } from '@/types';
 
-class Sdk implements SdkBase {
-  name: SdkBase['name'];
-  _plugins: SdkBase['_plugins'];
+class Sdk implements SdkResult {
+  name: SdkResult['name'];
+  _plugins: SdkResult['_plugins'];
 
   constructor() {
     this.name = '';
@@ -10,7 +10,7 @@ class Sdk implements SdkBase {
   }
 
   mount(name: string) {
-    if (window[name]) return console.error(`The SDK already exists - ${name}`);
+    if (window[name]) throw new Error(`The SDK already exists - ${name}`);
     console.log('%c SDK mounted:', 'color: pink; font-weight: bold;', name);
 
     // 设置名称
@@ -37,11 +37,32 @@ class Sdk implements SdkBase {
   }
 
   extend(name: string) {
-    if (!window[name]) return console.error(`The SDK not found - ${name}`);
+    if (!window[name]) throw new Error(`The SDK not found - ${name}`);
     console.log('%c SDK extended:', 'color: pink; font-weight: bold;', name);
 
     // 合并实例属性
     Object.assign(this, window[name]);
+  }
+
+  use<K extends keyof PluginOptions>(
+    plugin: Plugin<K>,
+    options?: PluginOptions[K],
+  ) {
+    const { name, install } = plugin;
+
+    if (!name) throw new Error(`${name} plugin has no name`);
+
+    if (typeof install !== 'function')
+      throw new Error(`${name} plugin is not a function`);
+
+    // 插件安装
+    install(this, options);
+
+    // 添加到插件列表
+    this._plugins.set(name, { ...plugin, options });
+
+    // 链式调用
+    return this;
   }
 }
 
