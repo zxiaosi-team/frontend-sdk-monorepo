@@ -24,12 +24,17 @@
   },
   "dependencies": {},
   "devDependencies": {
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
     "rolldown": "^1.0.0-beta.52",
     "rolldown-plugin-dts": "^0.18.1",
     "rollup-plugin-node-externals": "^8.1.2",
     "typescript": "^5.9.3"
   },
-  "peerDependencies": {},
+  "peerDependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
