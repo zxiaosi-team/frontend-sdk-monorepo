@@ -1,6 +1,18 @@
-export interface PluginOptions {}
+import type { ConfigOptions, ConfigResults } from '@/plugins/config';
 
-export interface PluginResults {}
+export type ThemeProps = 'light' | 'dark' | (string & {});
+
+export type LocaleProps = 'zh-CN' | 'en-US' | (string & {});
+
+export interface PluginOptions {
+  /** Sdk 配置信息 */
+  config?: ConfigOptions;
+}
+
+export interface PluginResults {
+  /** Sdk 配置信息 */
+  config: ConfigResults;
+}
 
 export type PluginName = keyof PluginOptions;
 
