@@ -4,6 +4,8 @@ class Sdk implements SdkResult {
   name: SdkResult['name'];
   _plugins: SdkResult['_plugins'];
 
+  config: SdkResult['config'];
+
   constructor() {
     this.name = '';
     this._plugins = new Map();
