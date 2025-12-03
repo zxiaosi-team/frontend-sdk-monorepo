@@ -1,4 +1,5 @@
 import type { ConfigOptions, ConfigResults } from '@/plugins/config';
+import type { StorageOptions, StorageResults } from '@/plugins/storage';
 
 export type ThemeProps = 'light' | 'dark' | (string & {});
 
@@ -7,11 +8,15 @@ export type LocaleProps = 'zh-CN' | 'en-US' | (string & {});
 export interface PluginOptions {
   /** Sdk 配置信息 */
   config?: ConfigOptions;
+  /** 本地缓存 */
+  storage?: StorageOptions;
 }
 
 export interface PluginResults {
   /** Sdk 配置信息 */
   config: ConfigResults;
+  /** 本地缓存 */
+  storage: StorageResults;
 }
 
 export type PluginName = keyof PluginOptions;

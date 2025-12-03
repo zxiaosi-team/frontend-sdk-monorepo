@@ -5,6 +5,7 @@ class Sdk implements SdkResult {
   _plugins: SdkResult['_plugins'];
 
   config: SdkResult['config'];
+  storage: SdkResult['storage'];
 
   constructor() {
     this.name = '';
