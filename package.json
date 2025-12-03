@@ -9,6 +9,7 @@
   },
   "license": "MIT",
   "author": "zxiaosi",
+  "keywords": ["micro frontend", "qiankun", "vite"],
   "type": "module",
   "main": "dist/index.js",
   "module": "dist/index.js",
