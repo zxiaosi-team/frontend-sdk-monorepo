@@ -1,3 +1,4 @@
+import type { AppOptions, AppResults } from '@/plugins/app';
 import type { ClientOptions, ClientResults } from '@/plugins/client';
 import type { ConfigOptions, ConfigResults } from '@/plugins/config';
 import type { StorageOptions, StorageResults } from '@/plugins/storage';
@@ -6,7 +7,20 @@ export type ThemeProps = 'light' | 'dark' | (string & {});
 
 export type LocaleProps = 'zh-CN' | 'en-US' | (string & {});
 
+export interface UserInfo {
+  /** 用户信息 */
+  user?: any;
+  /** 用户权限 */
+  permissions?: string[];
+  /** 用户角色 */
+  roles?: string[];
+  /** 用户设置 */
+  settings?: { theme?: ThemeProps; locale?: LocaleProps };
+}
+
 export interface PluginOptions {
+  /** 项目信息 */
+  app?: AppOptions;
   /** 全局路由信息 */
   client?: ClientOptions;
   /** Sdk 配置信息 */
@@ -16,6 +30,8 @@ export interface PluginOptions {
 }
 
 export interface PluginResults {
+  /** 项目信息 */
+  app: AppResults;
   /** 全局路由信息 */
   client: ClientResults;
   /** Sdk 配置信息 */
