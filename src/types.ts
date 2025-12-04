@@ -1,3 +1,4 @@
+import type { ClientOptions, ClientResults } from '@/plugins/client';
 import type { ConfigOptions, ConfigResults } from '@/plugins/config';
 import type { StorageOptions, StorageResults } from '@/plugins/storage';
 
@@ -6,6 +7,8 @@ export type ThemeProps = 'light' | 'dark' | (string & {});
 export type LocaleProps = 'zh-CN' | 'en-US' | (string & {});
 
 export interface PluginOptions {
+  /** 全局路由信息 */
+  client?: ClientOptions;
   /** Sdk 配置信息 */
   config?: ConfigOptions;
   /** 本地缓存 */
@@ -13,6 +16,8 @@ export interface PluginOptions {
 }
 
 export interface PluginResults {
+  /** 全局路由信息 */
+  client: ClientResults;
   /** Sdk 配置信息 */
   config: ConfigResults;
   /** 本地缓存 */
