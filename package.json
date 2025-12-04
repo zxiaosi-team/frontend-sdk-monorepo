@@ -36,8 +36,8 @@
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "es-toolkit": "^1.42.0",
-    "rolldown": "^1.0.0-beta.52",
-    "rolldown-plugin-dts": "^0.18.1",
+    "rolldown": "^1.0.0-beta.53",
+    "rolldown-plugin-dts": "^0.18.2",
     "rollup-plugin-node-externals": "^8.1.2",
     "typescript": "^5.9.3"
   },
