@@ -2,6 +2,11 @@
   "name": "@zxiaosi/sdk",
   "version": "0.1.4",
   "description": "A micro frontend kit",
+  "keywords": [
+    "micro frontend",
+    "qiankun",
+    "vite"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/zxiaosi-team/fontend-sdk.git",
@@ -9,7 +14,6 @@
   },
   "license": "MIT",
   "author": "zxiaosi",
-  "keywords": ["micro frontend", "qiankun", "vite"],
   "type": "module",
   "main": "dist/index.js",
   "module": "dist/index.js",
@@ -24,7 +28,8 @@
     "dev": "rolldown -c rolldown.config.ts --watch"
   },
   "dependencies": {
-    "@ant-design/pro-layout": "^7.22.7"
+    "@ant-design/pro-layout": "^7.22.7",
+    "react-intl-universal": "^2.13.4"
   },
   "devDependencies": {
     "@types/react": "^18.3.12",
