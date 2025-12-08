@@ -4,6 +4,7 @@ class Sdk implements SdkResult {
   name: SdkResult['name'];
   _plugins: SdkResult['_plugins'];
 
+  api: SdkResult['api'];
   app: SdkResult['app'];
   client: SdkResult['client'];
   config: SdkResult['config'];

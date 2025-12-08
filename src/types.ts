@@ -1,3 +1,4 @@
+import type { ApiOptions, ApiResults } from '@/plugins/api';
 import type { AppOptions, AppResults } from '@/plugins/app';
 import type { ClientOptions, ClientResults } from '@/plugins/client';
 import type { ConfigOptions, ConfigResults } from '@/plugins/config';
@@ -19,6 +20,8 @@ export interface UserInfo {
 }
 
 export interface PluginOptions {
+  /** 全局请求 */
+  api?: ApiOptions;
   /** 项目信息 */
   app?: AppOptions;
   /** 全局路由信息 */
@@ -30,6 +33,8 @@ export interface PluginOptions {
 }
 
 export interface PluginResults {
+  /** 全局请求 */
+  api: ApiResults;
   /** 项目信息 */
   app: AppResults;
   /** 全局路由信息 */
