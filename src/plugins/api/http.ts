@@ -50,7 +50,7 @@ class Http {
         const token = sdk.storage.getToken();
         config.headers.lang = sdk.config.locale; // 添加语言到请求头
         config.headers.Authorization = token; // 添加token到请求头
-        merge(config.headers, sdk.api.config.headers); // 合并请求头
+        merge(config.headers, sdk.api.config.headers || {}); // 合并请求头
         return config;
       },
       function (error: AxiosError) {

@@ -56,17 +56,18 @@ const pluginName = 'api';
  * - 详情参考 {@link ApiOptions} {@link ApiResults}
  * - 内置了请求, 通过 sdk.api.request 发起请求
  * - 可通过外部传入 instance 自定义请求实例
- * - 预置了获取用户信息, 获取路由, 登录接口等接口, 以便组件使用
+ * - 预置了获取用户信息, 获取路由接口, 以便组件使用
  * @example sdk.api.request('/getTemp', { method: 'POST', ... })
  * @example sdk.api.request('/getTemp', { method: 'POST', isOriginalData: true }) // 返回原始数据
  * @example sdk.api.request('/getTemp', { method: 'POST', isShowFailMsg: false }) // 不显示错误信息
+ * @example sdk.api.request('/getTemp', { method: 'POST', isCancelRequest: false }) // 不自动取消重复请求
  */
 const SdkApiPlugin: Plugin<'api'> = {
   name: pluginName,
   install(sdk, options = {}) {
     // Axios 配置
     const axiosConfig = {
-      baseURL: '/api',
+      baseURL: '/',
       timeout: 0,
       ...options.config,
     } satisfies ApiOptions['config'];
