@@ -3,6 +3,7 @@ import type { AppOptions, AppResults } from '@/plugins/app';
 import type { ClientOptions, ClientResults } from '@/plugins/client';
 import type { ConfigOptions, ConfigResults } from '@/plugins/config';
 import type { StorageOptions, StorageResults } from '@/plugins/storage';
+import type { StoreOptions, StoreResults } from '@/plugins/store';
 
 export type ThemeProps = 'light' | 'dark' | (string & {});
 
@@ -30,6 +31,8 @@ export interface PluginOptions {
   config?: ConfigOptions;
   /** 本地缓存 */
   storage?: StorageOptions;
+  /** 全局状态管理 */
+  store?: StoreOptions;
 }
 
 export interface PluginResults {
@@ -43,6 +46,8 @@ export interface PluginResults {
   config: ConfigResults;
   /** 本地缓存 */
   storage: StorageResults;
+  /** 全局状态管理 */
+  store: StoreResults;
 }
 
 export type PluginName = keyof PluginOptions;

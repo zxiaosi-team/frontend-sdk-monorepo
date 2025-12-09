@@ -9,6 +9,7 @@ class Sdk implements SdkResult {
   client: SdkResult['client'];
   config: SdkResult['config'];
   storage: SdkResult['storage'];
+  store: SdkResult['store'];
 
   constructor() {
     this.name = '';
