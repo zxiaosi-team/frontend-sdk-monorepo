@@ -1,5 +1,6 @@
 import { sdk } from '@/core';
 import type { LocaleProps } from '@/types';
+import intl from 'react-intl-universal';
 import type { StateCreator } from 'zustand';
 
 interface LocaleStoreProps {
@@ -22,6 +23,18 @@ const createLocaleSlice: StateCreator<LocaleStoreProps> = (set, get) => ({
 
     // 设置作用域
     document.documentElement.setAttribute('lang', locale);
+
+    // 设置 React Intl Universal 语言包
+    const intlConfig = sdk.i18n.intlConfig;
+    intl.init({ currentLocale: locale, locales: intlConfig });
+
+    // 加载 Antd 语言包
+    try {
+      const localeData = sdk.i18n.loadLocale?.(locale) || undefined;
+      sdk.config.antdConfig.locale = localeData;
+    } catch (e) {
+      console.error('sdk.i18n.loadLocale error:', e);
+    }
   },
 });
 

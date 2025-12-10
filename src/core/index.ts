@@ -8,6 +8,7 @@ class Sdk implements SdkResult {
   app: SdkResult['app'];
   client: SdkResult['client'];
   config: SdkResult['config'];
+  i18n: SdkResult['i18n'];
   storage: SdkResult['storage'];
   store: SdkResult['store'];
 
