@@ -2,6 +2,7 @@ import type { ApiOptions, ApiResults } from '@/plugins/api';
 import type { AppOptions, AppResults } from '@/plugins/app';
 import type { ClientOptions, ClientResults } from '@/plugins/client';
 import type { ConfigOptions, ConfigResults } from '@/plugins/config';
+import type { I18nOptions, I18nResults } from '@/plugins/i18n';
 import type { StorageOptions, StorageResults } from '@/plugins/storage';
 import type { StoreOptions, StoreResults } from '@/plugins/store';
 
@@ -29,6 +30,8 @@ export interface PluginOptions {
   client?: ClientOptions;
   /** Sdk 配置信息 */
   config?: ConfigOptions;
+  /** 多语言 */
+  i18n?: I18nOptions;
   /** 本地缓存 */
   storage?: StorageOptions;
   /** 全局状态管理 */
@@ -44,6 +47,8 @@ export interface PluginResults {
   client: ClientResults;
   /** Sdk 配置信息 */
   config: ConfigResults;
+  /** 多语言 */
+  i18n: I18nResults;
   /** 本地缓存 */
   storage: StorageResults;
   /** 全局状态管理 */
