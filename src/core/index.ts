@@ -11,6 +11,7 @@ class Sdk implements SdkResult {
   i18n: SdkResult['i18n'];
   storage: SdkResult['storage'];
   store: SdkResult['store'];
+  ui: SdkResult['ui'];
 
   constructor() {
     this.name = '';
