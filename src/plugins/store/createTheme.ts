@@ -6,7 +6,7 @@ interface ThemeStoreProps {
   /** 主题 */
   theme: ThemeProps;
   /** 设置主题 */
-  setTheme: (theme: ThemeProps) => void;
+  setTheme(theme: ThemeProps): void;
 }
 
 /** 主题状态 */

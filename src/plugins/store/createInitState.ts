@@ -6,7 +6,7 @@ interface InitStateStoreProps {
   /** 初始变量 */
   initState: UserInfo;
   /** 设置初始变量 */
-  setInitState: (initState: UserInfo) => void;
+  setInitState(initState: UserInfo): void;
 }
 
 /** 初始变量状态 */

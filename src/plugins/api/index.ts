@@ -27,13 +27,13 @@ interface ApiOptions {
    * {@link UserInfo}
    * @example { data: { user: { ... }, permissions: [], roles: [], settings: {} }, code: 200 }
    */
-  getUserInfoApi?: () => Promise<AxiosResponse<UserInfo>>;
+  getUserInfoApi?(): Promise<AxiosResponse<UserInfo>>;
   /**
    * 获取路由数据
    * {@link RouteObject}
    * @example { data: [{path: '/', name: '首页', element: 'Home'}], code: 200 }
    */
-  getRoutesApi?: () => Promise<AxiosResponse<RouteObject[]>>;
+  getRoutesApi?(): Promise<AxiosResponse<RouteObject[]>>;
 }
 
 interface ApiResults extends Required<ApiOptions> {
@@ -42,10 +42,10 @@ interface ApiResults extends Required<ApiOptions> {
    * @param url 请求地址
    * @param options 自定义配置项
    */
-  readonly request: (
+  request(
     url: string,
     options?: ApiRequestOption,
-  ) => Promise<AxiosResponse<any, any>>;
+  ): Promise<AxiosResponse<any, any>>;
 }
 
 /** 插件名称 */

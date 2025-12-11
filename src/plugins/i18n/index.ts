@@ -46,7 +46,7 @@ interface I18nOptions {
    *   }
    * }
    */
-  loadLocale?: (locale: string) => any;
+  loadLocale?(locale: string): any;
 }
 
 interface I18nResults extends Required<I18nOptions> {}
