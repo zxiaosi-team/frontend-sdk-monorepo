@@ -42,8 +42,12 @@ const SdkUIPlugin: Plugin<'ui'> = {
       },
       renderComponent: (name, props = {}) => {
         const Component = sdk.ui.getComponent(name);
-        if (!Component) throw new Error(`Sdk: Component ${name} not found`);
-        return createElement(Component, props);
+        if (!Component) {
+          console.error(`Sdk: Component ${name} not found`);
+          return null;
+        } else {
+          return createElement(Component, props);
+        }
       },
     } satisfies UIResults;
 
