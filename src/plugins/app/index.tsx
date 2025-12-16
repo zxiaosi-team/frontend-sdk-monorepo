@@ -27,6 +27,11 @@ interface AppOptions {
 
 interface AppResults extends Required<AppOptions> {
   /**
+   * 初始化数据
+   * - sdk.config.qiankunMode = 'load' 时, 登录时用
+   */
+  initData(): void;
+  /**
    * 清空数据
    */
   clearData(): void;
@@ -70,6 +75,7 @@ const SdkAppPlugin: Plugin<'app'> = {
       roles: [],
       settings: {},
 
+      initData: null,
       clearData: () => {
         sdk.app.menuData = [];
         sdk.app.allRoutes = sdk.app.allRoutes.filter((_) => _.path !== '/');
