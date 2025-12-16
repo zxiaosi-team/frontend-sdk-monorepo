@@ -1,4 +1,4 @@
-/** 404页面 */
+/** 404组件 */
 const NotFound: React.FC = () => {
   return (
     <div
