@@ -33,6 +33,7 @@ interface AppResults extends Required<AppOptions> {
   initData(): void;
   /**
    * 清空数据
+   * - sdk.config.qiankunMode = 'load' 时, 登出时用
    */
   clearData(): void;
   /**
