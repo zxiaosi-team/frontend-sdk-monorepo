@@ -2,6 +2,8 @@ import type { Plugin } from '@/types';
 import { merge } from 'es-toolkit';
 import { type ComponentType, createElement, type ReactElement } from 'react';
 
+import NotFound from './notFound';
+
 interface UIOptions {
   /** 组件 */
   [key: string]: ComponentType | ((name: string) => ComponentType);
@@ -36,6 +38,8 @@ const SdkUIPlugin: Plugin<'ui'> = {
   install(sdk, options = {}) {
     // 默认插件配置
     const defaultOptions = {
+      NotFound,
+
       getComponent: (name) => {
         if (!name) throw new Error('Sdk: Component name cannot be empty');
         return sdk.ui[name] as ComponentType;
