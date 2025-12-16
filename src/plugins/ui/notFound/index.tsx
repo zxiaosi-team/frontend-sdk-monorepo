@@ -1,7 +1,4 @@
-/**
- * 404页面
- * - 需要注册 navigate 实例，用于跳转页面
- */
+/** 404页面 */
 const NotFound: React.FC = () => {
   return (
     <div
