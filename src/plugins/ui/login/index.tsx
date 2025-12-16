@@ -28,12 +28,12 @@ const Login: React.FC = () => {
 
       if (sdk.config.qiankunMode === 'load') {
         sdk.client.navigate(defaultPath, { replace: true });
-        // TODO 添加获取数据的逻辑
-        // sdk.app.initData();
+        sdk.app.initData?.();
       } else {
         window.location.replace(defaultPath);
       }
     } catch (e) {
+      console.log('Login handleFinish: ', e);
       setLoading(() => false);
     }
   };
