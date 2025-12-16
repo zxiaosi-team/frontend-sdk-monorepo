@@ -2,6 +2,7 @@ import type { Plugin } from '@/types';
 import { merge } from 'es-toolkit';
 import { type ComponentType, createElement, type ReactElement } from 'react';
 
+import NoPermission from './noPermission';
 import NotFound from './notFound';
 
 interface UIOptions {
@@ -39,6 +40,7 @@ const SdkUIPlugin: Plugin<'ui'> = {
     // 默认插件配置
     const defaultOptions = {
       NotFound,
+      NoPermission,
 
       getComponent: (name) => {
         if (!name) throw new Error('Sdk: Component name cannot be empty');
