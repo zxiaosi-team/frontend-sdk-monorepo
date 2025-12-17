@@ -2,6 +2,7 @@ import type { Plugin } from '@/types';
 import { merge } from 'es-toolkit';
 import { type ComponentType, createElement, type ReactElement } from 'react';
 
+import Loading from './loading';
 import Login from './login';
 import NoPermission from './noPermission';
 import NotFound from './notFound';
@@ -40,6 +41,7 @@ const SdkUIPlugin: Plugin<'ui'> = {
   install(sdk, options = {}) {
     // 默认插件配置
     const defaultOptions = {
+      Loading,
       Login,
       NotFound,
       NoPermission,
