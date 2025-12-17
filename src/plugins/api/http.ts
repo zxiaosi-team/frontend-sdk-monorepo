@@ -54,7 +54,7 @@ class Http {
         return config;
       },
       function (error: AxiosError) {
-        console.error(`请求错误`);
+        console.error(`Sdk: defaultRequestInterceptor - 请求错误`);
         return Promise.reject(error);
       },
     );
@@ -73,7 +73,11 @@ class Http {
         // 跟后端定义的成功标识 非0的都是失败
         if (code !== 0) {
           if (isShowFailMsg) message.error(msg);
-          console.error('response error: ', config.url, msg);
+          console.error(
+            'Sdk: defaultResponseInterceptor - Response error: ',
+            config.url,
+            msg,
+          );
 
           if (code == 20041) sdk.app.pageToLogin(); // 登录过期，跳转登录页
         }
@@ -101,7 +105,11 @@ class Http {
           if (isShowFailMsg)
             message.error('请求超时或服务器异常，请检查网络或联系管理员');
 
-          console.error('Request error:', config.url, error);
+          console.error(
+            'Sdk: defaultResponseInterceptor - Request error:',
+            config.url,
+            error,
+          );
         }
 
         return Promise.reject(error);

@@ -33,7 +33,7 @@ const Login: React.FC = () => {
         window.location.replace(defaultPath);
       }
     } catch (e) {
-      console.log('Login handleFinish: ', e);
+      console.log('Sdk: Login - handleFinish: ', e);
       setLoading(() => false);
     }
   };

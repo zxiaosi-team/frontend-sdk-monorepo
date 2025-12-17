@@ -20,7 +20,12 @@ class Sdk implements SdkResult {
 
   mount(name: string) {
     if (window[name]) throw new Error(`The SDK already exists - ${name}`);
-    console.log('%c SDK mounted:', 'color: pink; font-weight: bold;', name);
+    console.log(
+      '%c SDK mounted:',
+      'color: pink; font-weight: bold;',
+      name,
+      sdk,
+    );
 
     // 设置名称
     this.name = name;

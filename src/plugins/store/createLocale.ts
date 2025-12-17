@@ -33,7 +33,7 @@ const createLocaleSlice: StateCreator<LocaleStoreProps> = (set, get) => ({
       const localeData = sdk.i18n.loadLocale?.(locale) || undefined;
       sdk.config.antdConfig.locale = localeData;
     } catch (e) {
-      console.error('sdk.i18n.loadLocale error:', e);
+      console.error('Sdk: createLocaleSlice - sdk.i18n.loadLocale error:', e);
     }
   },
 });
