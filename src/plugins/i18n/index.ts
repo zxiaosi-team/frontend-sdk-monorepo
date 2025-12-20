@@ -1,6 +1,7 @@
-import type { Plugin } from '@/types';
 import { merge } from 'es-toolkit';
 import intl from 'react-intl-universal';
+
+import type { Plugin } from '@/types';
 
 interface I18nOptions {
   /**

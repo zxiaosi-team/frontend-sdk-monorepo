@@ -1,6 +1,8 @@
-import type { Plugin } from '@/types';
 import { createStore } from 'zustand';
 import { subscribeWithSelector } from 'zustand/middleware';
+
+import type { Plugin } from '@/types';
+
 import {
   createInitStateSlice,
   type InitStateStoreProps,

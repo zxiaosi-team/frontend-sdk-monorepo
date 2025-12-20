@@ -1,11 +1,14 @@
-import type { Plugin, UserInfo } from '@/types';
+import type { RouteObject } from 'react-router-dom';
+
 import {
   type AxiosInstance,
   type AxiosResponse,
   type CreateAxiosDefaults,
 } from 'axios';
 import { merge } from 'es-toolkit';
-import type { RouteObject } from 'react-router-dom';
+
+import type { Plugin, UserInfo } from '@/types';
+
 import Http, { type ApiRequestOption } from './http';
 
 interface ApiOptions {
