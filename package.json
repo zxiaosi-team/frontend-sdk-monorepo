@@ -7,22 +7,26 @@
     "qiankun",
     "vite"
   ],
+  "license": "MIT",
+  "author": "zxiaosi",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/zxiaosi-team/fontend-sdk.git",
     "directory": "sdk"
   },
-  "license": "MIT",
-  "author": "zxiaosi",
-  "type": "module",
-  "main": "dist/index.js",
-  "module": "dist/index.js",
-  "types": "dist/index.d.ts",
   "files": [
     "dist",
     "rolldown.config.ts",
     "tsconfig.json"
   ],
+  "type": "module",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
   "scripts": {
     "build": "rolldown -c rolldown.config.ts --minify",
     "dev": "rolldown -c rolldown.config.ts --watch"
@@ -48,9 +52,5 @@
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.30.2",
     "zustand": "^5.0.9"
-  },
-  "publishConfig": {
-    "access": "public",
-    "registry": "https://registry.npmjs.org/"
   }
 }
