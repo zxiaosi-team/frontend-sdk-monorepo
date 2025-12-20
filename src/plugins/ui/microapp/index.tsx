@@ -45,7 +45,7 @@ const Microapp: React.FC<Props> = ({ name, rootId }) => {
 
   return (
     <>
-      {microAppLoading && <div>{sdk.ui.renderComponent('Loading')}</div>}
+      {microAppLoading && sdk.ui.renderComponent('Loading')}
       <main id={rootId}></main>
     </>
   );
