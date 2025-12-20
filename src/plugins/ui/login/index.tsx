@@ -50,31 +50,31 @@ const Login: React.FC = () => {
     >
       <Form
         labelCol={{ span: 8 }}
-        labelAlign="left"
+        labelAlign='left'
         wrapperCol={{ span: 16 }}
         style={{ maxWidth: 600 }}
         initialValues={{ remember: true }}
         onFinish={handleFinish}
-        autoComplete="off"
+        autoComplete='off'
       >
         <Form.Item
-          label="用户名"
-          name="username"
+          label='用户名'
+          name='username'
           rules={[{ required: true, message: '请输入用户名!' }]}
         >
           <Input />
         </Form.Item>
 
         <Form.Item
-          label="密码"
-          name="password"
+          label='密码'
+          name='password'
           rules={[{ required: true, message: '请输入密码!' }]}
         >
           <Input.Password />
         </Form.Item>
 
         <Form.Item noStyle>
-          <Button block type="primary" htmlType="submit" loading={loading}>
+          <Button block type='primary' htmlType='submit' loading={loading}>
             登录
           </Button>
         </Form.Item>
