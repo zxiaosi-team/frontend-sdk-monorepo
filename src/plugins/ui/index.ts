@@ -5,6 +5,7 @@ import type { Plugin } from '@/types';
 
 import Loading from './loading';
 import Login from './login';
+import Microapp from './microapp';
 import NoPermission from './noPermission';
 import NotFound from './notFound';
 
@@ -44,6 +45,7 @@ const SdkUIPlugin: Plugin<'ui'> = {
     const defaultOptions = {
       Loading,
       Login,
+      Microapp,
       NotFound,
       NoPermission,
 
