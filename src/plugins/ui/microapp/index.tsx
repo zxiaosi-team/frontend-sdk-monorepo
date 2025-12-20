@@ -23,23 +23,23 @@ const Microapp: React.FC<Props> = ({ name, rootId }) => {
   useEffect(() => {
     if (!name || sdk.config.qiankunMode !== 'load') return;
 
-    const instance = sdk.app.microAppsInstance.get(name);
+    let instance = sdk.app.microAppsInstance.get(name);
     if (instance) {
       instance.mount();
     } else {
       const microApp = sdk.app.microApps.find((_) => _.name === name);
       if (!microApp) return;
+
       setMicroAppLoading(true);
-      const newInstance = loadMicroApp(microApp, {}, lifeCyclesUtil);
-      newInstance.loadPromise.finally(() => {
+      const instance = loadMicroApp(microApp, {}, lifeCyclesUtil);
+      instance.loadPromise.finally(() => {
         setMicroAppLoading(false);
       });
-      sdk.app.microAppsInstance.set(name, newInstance);
+      sdk.app.microAppsInstance.set(name, instance);
     }
 
     return () => {
-      const ins = sdk.app.microAppsInstance.get(name);
-      if (ins) ins.unmount();
+      instance?.unmount();
     };
   }, [name]);
 
