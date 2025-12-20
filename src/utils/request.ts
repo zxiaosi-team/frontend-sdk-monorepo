@@ -1,6 +1,8 @@
-import { sdk } from '@/core';
-import type { ApiRequestOption } from '@/plugins/api/http';
 import type { AxiosResponse } from 'axios';
+
+import type { ApiRequestOption } from '@/plugins/api/http';
+
+import { sdk } from '@/core';
 
 /**
  * 生成请求id

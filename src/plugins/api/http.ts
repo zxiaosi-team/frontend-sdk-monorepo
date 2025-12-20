@@ -1,5 +1,3 @@
-import { sdk } from '@/core';
-import { cancelRequestUtil, generateRequestIdUtil } from '@/utils';
 import { message } from 'antd';
 import axios, {
   AxiosError,
@@ -10,6 +8,9 @@ import axios, {
   type InternalAxiosRequestConfig,
 } from 'axios';
 import { merge } from 'es-toolkit';
+
+import { sdk } from '@/core';
+import { cancelRequestUtil, generateRequestIdUtil } from '@/utils';
 
 export interface ApiRequestOption extends AxiosRequestConfig {
   /** 请求唯一key(默认自动生成) */

@@ -1,5 +1,6 @@
-import type { LocaleProps, Plugin, ThemeProps } from '@/types';
 import { merge } from 'es-toolkit';
+
+import type { LocaleProps, Plugin, ThemeProps } from '@/types';
 
 interface StorageOptions {
   /** 国际化存储名称 */

@@ -1,7 +1,10 @@
-import { sdk } from '@/core';
-import type { LocaleProps } from '@/types';
-import intl from 'react-intl-universal';
 import type { StateCreator } from 'zustand';
+
+import intl from 'react-intl-universal';
+
+import type { LocaleProps } from '@/types';
+
+import { sdk } from '@/core';
 
 interface LocaleStoreProps {
   /** 国际化 */

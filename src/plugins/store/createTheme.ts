@@ -1,6 +1,8 @@
-import { sdk } from '@/core';
-import type { ThemeProps } from '@/types';
 import type { StateCreator } from 'zustand';
+
+import type { ThemeProps } from '@/types';
+
+import { sdk } from '@/core';
 
 interface ThemeStoreProps {
   /** 主题 */

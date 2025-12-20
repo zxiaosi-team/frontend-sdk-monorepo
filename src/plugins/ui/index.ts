@@ -1,6 +1,7 @@
-import type { Plugin } from '@/types';
 import { merge } from 'es-toolkit';
 import { type ComponentType, createElement, type ReactElement } from 'react';
+
+import type { Plugin } from '@/types';
 
 import Loading from './loading';
 import Login from './login';
