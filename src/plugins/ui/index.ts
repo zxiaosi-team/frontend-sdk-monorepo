@@ -3,6 +3,7 @@ import { type ComponentType, createElement, type ReactElement } from 'react';
 
 import type { Plugin } from '@/types';
 
+import Layout from './layout';
 import Loading from './loading';
 import Login from './login';
 import Microapp from './microapp';
@@ -43,6 +44,7 @@ const SdkUIPlugin: Plugin<'ui'> = {
   install(sdk, options = {}) {
     // 默认插件配置
     const defaultOptions = {
+      Layout,
       Loading,
       Login,
       Microapp,
