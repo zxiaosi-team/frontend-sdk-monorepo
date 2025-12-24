@@ -36,7 +36,7 @@ const pluginName = 'ui';
  * - 详情参考 {@link UIOptions} {@link UIResults}
  * - 内置了 Layout、Loading、Login、Mainapp、Microapp、NotFound 等组件, 可传入覆盖
  * - 组件共享
- *    - 在主应用中, 可通过 use(SdkUIPlugin, { MyComponent }) 传入组件
+ *    - 在主应用中, 可通过 sdk.use(SdkUIPlugin, { MyComponent }) 传入组件
  *    - 在子应用中, 可通过 sdk.ui.renderComponent('MyComponent') 使用组件
  */
 const SdkUIPlugin: Plugin<'ui'> = {
