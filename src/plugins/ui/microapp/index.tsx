@@ -25,14 +25,14 @@ const Microapp: React.FC<Props> = ({ name, rootId }) => {
 
     let instance = sdk.app.microAppsInstance.get(name);
     if (instance) {
-      instance.mount();
+      instance?.mount();
     } else {
       const microApp = sdk.app.microApps.find((_) => _.name === name);
       if (!microApp) return;
 
       setMicroAppLoading(true);
-      const instance = loadMicroApp(microApp, {}, lifeCyclesUtil);
-      instance.loadPromise.finally(() => {
+      instance = loadMicroApp(microApp, {}, lifeCyclesUtil);
+      instance?.mountPromise?.finally(() => {
         setMicroAppLoading(false);
       });
       sdk.app.microAppsInstance.set(name, instance);
@@ -45,7 +45,8 @@ const Microapp: React.FC<Props> = ({ name, rootId }) => {
 
   return (
     <>
-      {microAppLoading && sdk.ui.renderComponent('Loading')}
+      {microAppLoading &&
+        sdk.ui.renderComponent('Loading', { isMicroApp: true })}
       <main id={rootId}></main>
     </>
   );

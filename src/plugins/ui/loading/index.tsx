@@ -3,12 +3,20 @@ import { theme } from 'antd';
 const { useToken } = theme;
 
 interface Props {
-  /** 是否初始化数据的Loading */
+  /** 是否是初始化数据 */
   isInitData?: boolean;
+  /** 是否是懒加载 */
+  isSuspense?: boolean;
+  /** 是否是子应用加载 */
+  isMicroApp?: boolean;
 }
 
 /** 加载中组件 */
-const Loading: React.FC = ({ isInitData = false }: Props) => {
+const Loading: React.FC = ({
+  isInitData = false,
+  isSuspense = false,
+  isMicroApp = false,
+}: Props) => {
   const { token } = useToken();
   return (
     <div
