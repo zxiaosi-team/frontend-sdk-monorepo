@@ -20,13 +20,11 @@ interface ConfigOptions {
    * - 'router': 基于路由模式
    *    - 登录时，刷新页面，会自动调用 getUserInfoApi、getRoutesApi 获取数据
    *    - 拿到 routes 数据之后，需要 registerMicroApps 注册子应用 和 start 启动子应用
-   *    - 页面无权限时，跳转 /403 页面
    *    - 系统退出时，刷新页面，自动销毁 qiankun 声明周期和缓存的数据
    *    - 系统登录和系统退出仅有一次刷新页面即可，为了销毁 qiankun 的声明周期，但数据需要手动加载或者清除
    * - 'load': 手动加载模式
    *    - 登录时，不需刷新页面, 但需要手动调用 getUserInfoApi、getRoutesApi 获取数据
    *    - 拿到 routes 数据之后，在 Microapp 组件中使用 loadMicroApp 手动加载子应用
-   *    - 页面无权限时，直接在当前页面显示 403 组件
    *    - 系统退出时，不刷新页面，但需要手动销毁每个子应用，并清除缓存数据
    */
   qiankunMode?: 'router' | 'load';
