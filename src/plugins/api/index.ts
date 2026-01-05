@@ -1,10 +1,6 @@
 import type { RouteObject } from 'react-router-dom';
 
-import {
-  type AxiosInstance,
-  type AxiosResponse,
-  type CreateAxiosDefaults,
-} from 'axios';
+import { type AxiosInstance, type CreateAxiosDefaults } from 'axios';
 import { merge } from 'es-toolkit';
 
 import type { Plugin, UserInfo } from '@/types';
@@ -28,15 +24,15 @@ interface ApiOptions {
   /**
    * 获取用户信息
    * {@link UserInfo}
-   * @example { data: { user: { ... }, permissions: [], roles: [], settings: {} }, code: 200 }
+   * @example { code: 0, data: { user: {}, permissions: [], roles: [], settings: {} } }
    */
-  getUserInfoApi?(): Promise<AxiosResponse<UserInfo>>;
+  getUserInfoApi?(): Promise<any>;
   /**
    * 获取路由数据
    * {@link RouteObject}
-   * @example { data: [{path: '/', name: '首页', element: 'Home'}], code: 200 }
+   * @example { code: 0, data: [{path: '/', name: '首页', component: 'Home'}] }
    */
-  getRoutesApi?(): Promise<AxiosResponse<RouteObject[]>>;
+  getRoutesApi?(): Promise<any>;
 }
 
 interface ApiResults extends Required<ApiOptions> {
@@ -45,10 +41,7 @@ interface ApiResults extends Required<ApiOptions> {
    * @param url 请求地址
    * @param options 自定义配置项
    */
-  request(
-    url: string,
-    options?: ApiRequestOption,
-  ): Promise<AxiosResponse<any, any>>;
+  request(url: string, options?: ApiRequestOption): Promise<any>;
 }
 
 /** 插件名称 */
