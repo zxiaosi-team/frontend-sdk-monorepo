@@ -13,14 +13,37 @@
 ```js
 // main.ts
 
-import { SdkApiPlugin, sdk } from '@zxiaosi/sdk';
+import {
+  sdk,
+  SdkApiPlugin,
+  SdkAppPlugin,
+  SdkClientPlugin,
+  SdkConfigPlugin,
+  SdkI18nPlugin,
+  SdkStoragePlugin,
+  SdkStorePlugin,
+  SdkUIPlugin,
+} from '@zxiaosi/sdk';
 
+/** 挂载 SDK */
 sdk
   .use(SdkApiPlugin, {
-    config: {
-      baseURL: '/api',
+    getRoutesApi: async () => ({ code: 0, data: [{ path: '/home', name: '首页', component: 'Home' }] }),
+    getUserInfoApi: async () => ({ code: 0, data: { user: {}, permissions: ['/home'], roles: [], settings: {} } }),
+  })
+  .use(SdkAppPlugin)
+  .use(SdkClientPlugin)
+  .use(SdkConfigPlugin, {
+    qiankunMode: 'router',
+    proLayoutConfig: {
+      title: 'Demo',
+      layout: 'mix',
     },
   })
+  .use(SdkI18nPlugin)
+  .use(SdkStoragePlugin)
+  .use(SdkStorePlugin)
+  .use(SdkUIPlugin, { Home: ()=> <div>Home</div> })
   .mount('sdk');
 ```
 
