@@ -13,10 +13,19 @@ import NotFound from './notFound';
 
 interface UIOptions {
   /** 组件 */
-  [key: string]: ComponentType | ((name: string) => ComponentType);
+  [key: string]:
+    | ComponentType
+    | ((name: string) => ComponentType)
+    | ((component: ComponentType, name?: string) => void);
 }
 
 interface UIResults extends Required<UIOptions> {
+  /**
+   * 设置组件
+   * @param component 组件
+   * @param name 组件名称
+   */
+  setComponent(component: ComponentType, name?: string): void;
   /**
    * 获取组件
    * @param name 组件名称
@@ -53,9 +62,27 @@ const SdkUIPlugin: Plugin<'ui'> = {
       NotFound,
       NoPermission,
 
+      setComponent: (component, name) => {
+        if (!component) {
+          console.error('Sdk: SdkUIPlugin - component cannot be empty');
+          return;
+        }
+
+        const componentName = name || component.displayName || component.name;
+        if (!componentName) {
+          console.error('Sdk: SdkUIPlugin - Component name cannot be empty');
+          return;
+        }
+
+        sdk.ui[componentName] = component;
+      },
       getComponent: (name) => {
-        if (!name) throw new Error('Sdk: Component name cannot be empty');
-        return sdk.ui[name] as ComponentType;
+        if (!name) {
+          console.error('Sdk: SdkUIPlugin - Component name cannot be empty');
+          return null;
+        } else {
+          return sdk.ui[name] as ComponentType;
+        }
       },
       renderComponent: (name, props = {}) => {
         const Component = sdk.ui.getComponent(name);
