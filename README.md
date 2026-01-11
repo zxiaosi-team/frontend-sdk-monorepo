@@ -6,6 +6,8 @@
 
 ![](https://cdn.zxiaosi.com/hexo/micro-sdk/sdk0.2.png)
 
+- [更多详情](https://zxiaosi.com/archives/c6c40209.html)
+
 ## SDK 使用
 
 - 主应用, `sdk.use(Plugin, options)`, `sdk.mount('sdk')` 使用插件, 挂载到 `window` 上
