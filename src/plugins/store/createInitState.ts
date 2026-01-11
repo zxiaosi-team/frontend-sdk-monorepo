@@ -5,13 +5,13 @@ import type { UserInfo } from '@/types';
 import { sdk } from '@/core';
 
 interface InitStateStoreProps {
-  /** 初始变量 */
+  /** 初始状态 */
   initState: UserInfo;
-  /** 设置初始变量 */
+  /** 设置初始状态 */
   setInitState(initState: UserInfo): void;
 }
 
-/** 初始变量状态 */
+/** 创建初始状态切片 */
 const createInitStateSlice: StateCreator<InitStateStoreProps> = (set, get) => ({
   initState: {},
   setInitState: (initState) => {

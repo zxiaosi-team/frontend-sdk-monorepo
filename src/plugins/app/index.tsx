@@ -106,7 +106,7 @@ const SdkAppPlugin: Plugin<'app'> = {
 
         // 跳转登录页
         if (sdk.config.qiankunMode === 'router') {
-          window.location.replace(path); // 这里必须刷新一下页面, 否则qiankun实例不会销毁, 登录后会直接mount子应用, 而不是bootstrap子应用
+          window.location.replace(path); // 这里必须刷新一下页面, 否则qiankun实例不会销毁, 登录后会直接mount微应用, 而不是bootstrap微应用
         } else {
           sdk.app.clearData(); // 手动清空数据
           sdk.client.navigate(path, { replace: true }); // 使用客户端路由跳转

@@ -36,7 +36,7 @@ const WithClient: React.FC<any> = ({ children }) => {
   return children;
 };
 
-/** 主应用的根组件 */
+/** 主应用根组件 */
 const Mainapp: React.FC = () => {
   const loginPath = sdk.config.loginPath; // 登录路径
   const customRoutes = sdk.config.customRoutes; // 自定义路由

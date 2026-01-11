@@ -7,13 +7,13 @@ import type { LocaleProps } from '@/types';
 import { sdk } from '@/core';
 
 interface LocaleStoreProps {
-  /** 国际化 */
+  /** 语言 */
   locale: LocaleProps;
-  /** 设置国际化 */
+  /** 设置语言 */
   setLocale(locale: LocaleProps): void;
 }
 
-/** 国际化状态 */
+/** 创建语言切片 */
 const createLocaleSlice: StateCreator<LocaleStoreProps> = (set, get) => ({
   locale: null,
 
