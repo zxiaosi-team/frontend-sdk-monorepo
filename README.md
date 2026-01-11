@@ -2,9 +2,9 @@
 
 - 旨在简化微前端功能
 
-- [规划图地址](https://excalidraw.com/#json=s2zc7f8zAhOnhX6NEMKcv,0qIxSEqNMs7vwkq0a6G2yQ)
+- [规划图地址](https://excalidraw.com/#json=_CghR9MKEcgUt4SaYUXFY,V9n_bmADhi6JXp2TUk-ObA)
 
-![](https://cdn.zxiaosi.com/hexo/micro-sdk/sdk1.0.png)
+![](https://cdn.zxiaosi.com/hexo/micro-sdk/sdk0.2.png)
 
 ## SDK 使用
 
