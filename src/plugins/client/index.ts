@@ -9,10 +9,10 @@ interface ClientOptions {}
 interface ClientResults extends Required<ClientOptions> {
   /** 主应用 location */
   location: Location;
-  /** 主应用navigate（解决子应用跳转问题） */
-  navigate: NavigateFunction;
   /** 路由匹配（用于面包屑） */
   matches: UIMatch[];
+  /** 主应用navigate（解决微应用跳转问题） */
+  navigate: NavigateFunction;
 }
 
 /** 插件名称 */

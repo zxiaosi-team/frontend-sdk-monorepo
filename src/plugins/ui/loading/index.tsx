@@ -7,7 +7,7 @@ interface Props {
   isInitData?: boolean;
   /** 是否是懒加载 */
   isSuspense?: boolean;
-  /** 是否是子应用加载 */
+  /** 是否是微应用加载 */
   isMicroApp?: boolean;
 }
 

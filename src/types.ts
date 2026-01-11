@@ -78,7 +78,7 @@ export interface SdkBase {
   _plugins: Map<string, any>;
   /** 挂载sdk - 主应用挂载 SDK 到 Window */
   mount(name: string): void;
-  /** 继承sdk - 子应用从 Window 上继承 SDK */
+  /** 继承sdk - 微应用从 Window 上继承 SDK */
   extend(name: string): void;
   /** 使用插件 */
   use<K extends PluginName>(

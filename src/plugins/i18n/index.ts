@@ -5,14 +5,14 @@ import type { Plugin } from '@/types';
 
 interface I18nOptions {
   /**
-   * React Intl Universal
+   * React Intl Universal 实例
    * - 不要解构使用, const { get } = useIntl() 会报错
    * - 如果项目不使用 React Compiler, 可以直接使用 sdk.i18n.intl
    * @example const intl = useIntl(); intl.get(key).d(defaultValue)
    */
   intl?: typeof intl;
   /**
-   * React Intl Universal 配置的语言包
+   * 自定义语言包
    * @example
    * {
    *  'zh-CN': {
@@ -25,7 +25,7 @@ interface I18nOptions {
    */
   intlConfig?: Record<string, any>;
   /**
-   * 加载 Antd 语言包
+   * 加载语言包
    * @param locale 语言包名
    * @example
    * import enUS from 'antd/es/locale/en_US';

@@ -15,7 +15,7 @@ interface ThemeStoreProps {
   setTheme(theme: ThemeProps): void;
 }
 
-/** 主题状态 */
+/**  创建主题切片 */
 const createThemeSlice: StateCreator<ThemeStoreProps> = (set, get) => ({
   theme: null,
 

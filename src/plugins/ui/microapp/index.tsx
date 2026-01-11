@@ -7,13 +7,13 @@ import { sdk } from '@/core';
 import { lifeCyclesUtil } from '@/utils';
 
 interface Props {
-  /** 子应用名称 */
+  /** 微应用名称 */
   name: string;
-  /** 子应用挂载节点 */
+  /** 微应用挂载节点 */
   rootId: string;
 }
 
-/** 子应用挂载组件 */
+/** 微应用挂载组件 */
 const Microapp: React.FC<Props> = ({ name, rootId }) => {
   const [microAppLoading, setMicroAppLoading] = useStore(
     sdk.store,

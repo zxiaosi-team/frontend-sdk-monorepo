@@ -30,7 +30,7 @@ export const handleRoutesUtil = (routes: any[]) => {
 /**
  * 递归转换路由数据
  * @param routes 路由数据
- * @param microApps 子应用列表
+ * @param microApps 微应用列表
  */
 export const transformRoutesUtil = (
   routes: any[],
@@ -43,19 +43,19 @@ export const transformRoutesUtil = (
 
     const { locale, path, icon, component, routeAttr, children } = item;
 
-    // 处理子应用路由
+    // 处理微应用路由
     if (routeAttr) {
       let newRouteAttr = {} as any;
 
       try {
-        newRouteAttr = JSON.parse(routeAttr); // 解析子应用路由属性
+        newRouteAttr = JSON.parse(routeAttr); // 解析微应用路由属性
       } catch (error) {
         console.error('Sdk: initData - Subapp routeAttr error: ', error);
       }
 
       const { name, rootId, ...rest } = newRouteAttr;
 
-      // 子应用信息
+      // 微应用信息
       const microAppInfo = {
         ...rest,
         name,
@@ -64,10 +64,10 @@ export const transformRoutesUtil = (
         loader: (loading) => sdk.store.getState().setMicroAppLoading(loading),
       };
 
-      // 添加子应用信息
+      // 添加微应用信息
       microAppsMap.set(name, microAppInfo);
 
-      element = sdk.ui.renderComponent('Microapp', { name, rootId }); // 子应用挂载组件
+      element = sdk.ui.renderComponent('Microapp', { name, rootId }); // 微应用挂载组件
     } else if (component === 'Outlet') {
       element = <Outlet />; // 路由出口组件
     } else {

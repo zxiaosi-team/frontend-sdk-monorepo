@@ -3,7 +3,7 @@ import { merge } from 'es-toolkit';
 import type { LocaleProps, Plugin, ThemeProps } from '@/types';
 
 interface StorageOptions {
-  /** 国际化存储名称 */
+  /** 语言存储名称 */
   localeKey?: string;
   /** 主题存储名称  */
   themeKey?: string;
@@ -12,11 +12,11 @@ interface StorageOptions {
 }
 
 interface StorageResults extends Required<StorageOptions> {
-  /** 获取当前国际化 */
+  /** 获取当前语言 */
   getLocale(): LocaleProps;
-  /** 设置/切换切换国际化 */
+  /** 设置/切换语言 */
   setLocale(locale: LocaleProps): void;
-  /** 清空国际化 */
+  /** 清空语言 */
   clearLocale(): void;
 
   /** 获取当前主题 */
@@ -41,10 +41,10 @@ const pluginName = 'storage';
  * 本地缓存
  * - 详情参考 {@link StorageOptions} {@link StorageResults}
  * - 配置 localStorage 变量名称
- * - 提供 国际化、主题、Token 的 get、change、clear 方法
+ * - 提供 语言、主题、Token 的 get、change、clear 方法
  * @example sdk.storage.getToken() // 获取 Token
  * @example sdk.storage.setTheme('dark') // 设置主题
- * @example sdk.storage.clearLocale() // 清空国际化
+ * @example sdk.storage.clearLocale() // 清空语言
  */
 const SdkStoragePlugin: Plugin<'storage'> = {
   name: pluginName,

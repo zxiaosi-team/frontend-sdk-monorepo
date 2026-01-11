@@ -66,7 +66,7 @@ function App() {
 export default App;
 ```
 
-- 子应用 `sdk.extend('sdk')`, 从 `window` 上找实例
+- 微应用 `sdk.extend('sdk')`, 从 `window` 上找实例
 
 ```js
 // main.ts
