@@ -28,8 +28,14 @@ import {
 /** 挂载 SDK */
 sdk
   .use(SdkApiPlugin, {
-    getRoutesApi: async () => ({ code: 0, data: [{ path: '/home', name: '首页', component: 'Home' }] }),
-    getUserInfoApi: async () => ({ code: 0, data: { user: {}, permissions: ['/home'], roles: [], settings: {} } }),
+    getRoutesApi: async () => ({
+      code: 0,
+      data: [{ path: '/home', name: '首页', component: 'Home' }],
+    }),
+    getUserInfoApi: async () => ({
+      code: 0,
+      data: { user: {}, permissions: ['/home'], roles: [], settings: {} },
+    }),
   })
   .use(SdkAppPlugin)
   .use(SdkClientPlugin)
@@ -43,8 +49,21 @@ sdk
   .use(SdkI18nPlugin)
   .use(SdkStoragePlugin)
   .use(SdkStorePlugin)
-  .use(SdkUIPlugin, { Home: ()=> <div>Home</div> })
+  .use(SdkUIPlugin, { Home: () => <div>Home</div> })
   .mount('sdk');
+```
+
+```js
+// App.tsx
+
+import { sdk } from '@zxiaosi/sdk';
+
+function App() {
+  const Mainapp = sdk.ui.getComponent('Mainapp');
+  return <Mainapp />;
+}
+
+export default App;
 ```
 
 - 子应用 `sdk.extend('sdk')`, 从 `window` 上找实例
