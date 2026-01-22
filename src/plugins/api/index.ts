@@ -33,6 +33,11 @@ interface ApiOptions {
    * @example { code: 0, data: [{path: '/', name: '首页', component: 'Home'}] }
    */
   getRoutesApi?(): Promise<any>;
+  /**
+   * 登录接口
+   * @example { code: 0, data: { token: 'xxxx' } }
+   */
+  loginApi?(params: any): Promise<any>;
 }
 
 interface ApiResults extends Required<ApiOptions> {
@@ -90,6 +95,7 @@ const SdkApiPlugin: Plugin<'api'> = {
 
       getUserInfoApi: () => sdk.api.request('/getUserInfo', { method: 'GET' }),
       getRoutesApi: () => sdk.api.request('/routes', { method: 'GET' }),
+      loginApi: () => sdk.api.request('/login', { method: 'POST' }),
     } satisfies ApiResults;
 
     sdk[pluginName] = merge(defaultOptions, options);
