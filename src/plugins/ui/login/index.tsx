@@ -15,10 +15,7 @@ const Login: React.FC = () => {
   const handleFinish: FormProps['onFinish'] = async (values) => {
     try {
       setLoading(() => true);
-      const resp = await sdk.api.request('/login', {
-        method: 'POST',
-        data: values,
-      });
+      const resp = await sdk.api.loginApi(values);
       setLoading(() => false);
 
       const token = resp?.data?.token || '';
