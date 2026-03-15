@@ -1,8 +1,7 @@
 import type { StateCreator } from 'zustand';
 
-import type { UserInfo } from '@/types';
-
 import { sdk } from '@/core';
+import type { UserInfo } from '@/types';
 
 interface InitStateStoreProps {
   /** 初始状态 */

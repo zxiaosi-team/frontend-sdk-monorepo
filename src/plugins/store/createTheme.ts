@@ -1,11 +1,9 @@
-import type { StateCreator } from 'zustand';
-
 import { theme as antdTheme } from 'antd';
 import { merge } from 'es-toolkit';
-
-import type { ThemeProps } from '@/types';
+import type { StateCreator } from 'zustand';
 
 import { sdk } from '@/core';
+import type { ThemeProps } from '@/types';
 
 const { defaultAlgorithm, darkAlgorithm } = antdTheme;
 interface ThemeStoreProps {

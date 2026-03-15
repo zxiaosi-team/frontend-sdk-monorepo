@@ -1,6 +1,5 @@
-import type { Location, NavigateFunction, UIMatch } from 'react-router-dom';
-
 import { merge } from 'es-toolkit';
+import type { Location, NavigateFunction, UIMatch } from 'react-router-dom';
 
 import type { Plugin } from '@/types';
 
