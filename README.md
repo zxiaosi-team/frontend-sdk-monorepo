@@ -6,6 +6,14 @@
 
 - [更多详情](https://zxiaosi.com/archives/c6c40209.html)
 
+## 快速开始
+
+```bash
+npm install -g @zxiaosi/create-sdk
+
+npx create-sdk
+```
+
 ## 项目介绍
 
 - 整个 `SDK` 都是围绕 `getRoutesApi`、`getUserInfoApi` 这两个接口进行设计的，旨在简化微前端应用的开发
