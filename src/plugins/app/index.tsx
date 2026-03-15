@@ -1,8 +1,7 @@
 import type { MenuDataItem } from '@ant-design/pro-layout';
+import { merge } from 'es-toolkit';
 import type { MicroApp, ObjectType, RegistrableApp } from 'qiankun';
 import type { RouteObject } from 'react-router-dom';
-
-import { merge } from 'es-toolkit';
 
 import type { Plugin, UserInfo } from '@/types';
 

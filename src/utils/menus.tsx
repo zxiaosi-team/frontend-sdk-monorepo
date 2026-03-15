@@ -1,5 +1,4 @@
 import type { ObjectType, RegistrableApp } from 'qiankun';
-
 import { createElement } from 'react';
 import { Outlet, type RouteObject } from 'react-router-dom';
 
