@@ -1,6 +1,6 @@
 {
   "name": "@zxiaosi/sdk",
-  "version": "0.2.3",
+  "version": "0.3.0",
   "description": "A micro frontend kit",
   "keywords": [
     "micro frontend",
@@ -15,9 +15,7 @@
     "directory": "sdk"
   },
   "files": [
-    "dist",
-    "rolldown.config.ts",
-    "tsconfig.json"
+    "dist"
   ],
   "type": "module",
   "main": "./dist/index.js",
