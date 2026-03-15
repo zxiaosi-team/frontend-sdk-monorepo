@@ -20,16 +20,15 @@
     "tsconfig.json"
   ],
   "type": "module",
-  "main": "dist/index.js",
-  "module": "dist/index.js",
+  "main": "./dist/index.js",
   "types": "dist/index.d.ts",
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
   },
   "scripts": {
-    "build": "rolldown -c rolldown.config.ts --minify",
-    "dev": "rolldown -c rolldown.config.ts --watch"
+    "build": "tsdown",
+    "dev": "tsdown --watch"
   },
   "dependencies": {
     "@ant-design/pro-layout": "^7.22.7",
@@ -41,9 +40,7 @@
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "es-toolkit": "^1.43.0",
-    "rolldown": "^1.0.0-rc.1",
-    "rolldown-plugin-dts": "^0.21.5",
-    "rollup-plugin-node-externals": "^8.1.2",
+    "tsdown": "^0.21.2",
     "typescript": "^5.9.3"
   },
   "peerDependencies": {
