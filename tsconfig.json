@@ -17,5 +17,5 @@
     }
   },
   "include": ["src"],
-  "exclude": ["rolldown.config.ts", "tsconfig.json"]
+  "exclude": ["tsdown.config.ts", "tsconfig.json"]
 }
