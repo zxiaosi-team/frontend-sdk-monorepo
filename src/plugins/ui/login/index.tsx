@@ -51,7 +51,7 @@ const Login: React.FC = () => {
         labelAlign='left'
         wrapperCol={{ span: 16 }}
         style={{ maxWidth: 600 }}
-        initialValues={{ remember: true }}
+        initialValues={{ username: 'admin', password: 'admin' }}
         onFinish={handleFinish}
         autoComplete='off'
       >

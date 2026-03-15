@@ -1,6 +1,7 @@
 import ProLayout from '@ant-design/pro-layout';
 import { Suspense } from 'react';
 import { Outlet, useLocation, useMatches, useNavigate } from 'react-router-dom';
+import { useStore } from 'zustand';
 
 import { sdk } from '@/core';
 
@@ -9,6 +10,8 @@ const Layout: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const matches = useMatches();
+
+  const locale = useStore(sdk.store, (state) => state.locale);
 
   const currentMatch = matches[matches.length - 1]?.handle?.crumb() || {};
   const noLayout = JSON.parse(currentMatch?.routeAttr || '{}')?.noLayout;
@@ -32,6 +35,10 @@ const Layout: React.FC = () => {
 
   return (
     <ProLayout
+      locale={locale as any}
+      formatMessage={({ id, defaultMessage }) =>
+        sdk.i18n.intl.get(id).d(defaultMessage)
+      }
       location={location}
       menuItemRender={(item, dom) => (
         <div onClick={() => handleMenuClick(item)}>{dom}</div>
