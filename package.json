@@ -30,22 +30,22 @@
   },
   "dependencies": {
     "@ant-design/pro-layout": "^7.22.7",
-    "axios": "^1.13.2",
+    "axios": "^1.13.6",
     "qiankun": "^2.10.16",
     "react-intl-universal": "^2.13.4"
   },
   "devDependencies": {
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
-    "es-toolkit": "^1.43.0",
-    "tsdown": "^0.21.2",
+    "es-toolkit": "^1.45.1",
+    "tsdown": "^0.21.4",
     "typescript": "^5.9.3"
   },
   "peerDependencies": {
-    "antd": "^5.29.1 || ^6.0.0",
+    "antd": "^5.29.0 || ^6.0.0",
     "react": "^18.3.1 || >=19.0.0",
     "react-dom": "^18.3.1 || >=19.0.0",
-    "react-router-dom": "^6.30.2",
-    "zustand": "^5.0.9"
+    "react-router-dom": "^6.30.0",
+    "zustand": "^5.0.0"
   }
 }
