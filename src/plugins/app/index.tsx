@@ -86,10 +86,7 @@ const SdkAppPlugin: Plugin<'app'> = {
         sdk.app.microAppsInstance.forEach((_) => _.unmount());
         sdk.app.microAppsInstance.clear();
 
-        sdk.app.user = null;
-        sdk.app.permissions = [];
-        sdk.app.roles = [];
-        sdk.app.settings = {};
+        sdk.store.getState().resetInitState();
       },
       pageToLogin: () => {
         // 清除 Token

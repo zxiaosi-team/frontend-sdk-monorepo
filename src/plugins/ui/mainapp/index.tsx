@@ -1,4 +1,4 @@
-import { ConfigProvider, Spin } from 'antd';
+import { ConfigProvider } from 'antd';
 import { cloneDeep } from 'es-toolkit/object';
 import { registerMicroApps, start } from 'qiankun';
 import React, { Suspense, useEffect, useMemo, useState } from 'react';
@@ -57,13 +57,14 @@ const Mainapp: React.FC = () => {
   const [loading, setLoading] = useState(false); // 加载状态(获取初始化数据时)
   const [routes, setRoutes] = useState<RouteObject[]>(defaultRoutes); // 路由
 
-  const [locale, setLocale, theme, setTheme] = useStore(
+  const [locale, setLocale, theme, setTheme, setInitState] = useStore(
     sdk.store,
     useShallow((state) => [
       state.locale,
       state.setLocale,
       state.theme,
       state.setTheme,
+      state.setInitState,
     ]),
   );
 
@@ -84,6 +85,9 @@ const Mainapp: React.FC = () => {
       const [{ data: userData = {} }, { data: routerData = [] }] =
         await Promise.all([sdk.api.getUserInfoApi(), sdk.api.getRoutesApi()]);
       setLoading(() => false);
+
+      // 设置用户信息
+      setInitState(userData);
 
       // 设置主题和语言(每个用户配置的主题和语言)
       const { theme, locale } = userData?.settings || {};
@@ -120,7 +124,6 @@ const Mainapp: React.FC = () => {
 
       sdk.app = {
         ...sdk.app,
-        ...userData,
         allRoutes,
         microApps,
         menuData,
