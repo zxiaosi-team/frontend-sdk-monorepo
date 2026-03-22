@@ -4,6 +4,8 @@ import { Outlet, type RouteObject } from 'react-router-dom';
 
 import { sdk } from '@/core';
 
+import { isPermissionUtil } from './permission';
+
 type MicroAppsMap = Map<string, RegistrableApp<ObjectType>>;
 
 /**
@@ -67,10 +69,14 @@ export const transformRoutesUtil = (
       microAppsMap.set(name, microAppInfo);
 
       element = sdk.ui.renderComponent('Microapp', { name, rootId }); // 微应用挂载组件
+    } else if (component === 'Microapp') {
+      element = sdk.ui.renderComponent('Microapp'); // 微应用挂载组件
     } else if (component === 'Outlet') {
       element = <Outlet />; // 路由出口组件
     } else {
-      element = sdk.ui.renderComponent(component); // 普通组件
+      // TODO: 将 isPermissionUtil 提到主应用中
+      const isAuth = isPermissionUtil(path); // 是否有权限
+      element = sdk.ui.renderComponent(isAuth ? component : 'NoPermission'); // 普通组
     }
 
     return {
