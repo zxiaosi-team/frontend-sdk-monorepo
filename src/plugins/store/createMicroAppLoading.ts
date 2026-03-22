@@ -1,6 +1,6 @@
 import type { StateCreator } from 'zustand';
 
-interface MicroAppStateStoreProps {
+interface MicroAppLoadingStoreProps {
   /** 微应用加载状态 */
   microAppLoading: boolean;
   /** 设置微应用加载状态 */
@@ -8,7 +8,7 @@ interface MicroAppStateStoreProps {
 }
 
 /** 创建微应用状态切片 */
-const createMicroAppStateSlice: StateCreator<MicroAppStateStoreProps> = (
+const createMicroAppLoadingSlice: StateCreator<MicroAppLoadingStoreProps> = (
   set,
   get,
 ) => ({
@@ -16,5 +16,5 @@ const createMicroAppStateSlice: StateCreator<MicroAppStateStoreProps> = (
   setMicroAppLoading: (microAppLoading) => set(() => ({ microAppLoading })),
 });
 
-export { createMicroAppStateSlice };
-export type { MicroAppStateStoreProps };
+export { createMicroAppLoadingSlice };
+export type { MicroAppLoadingStoreProps };

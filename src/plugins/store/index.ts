@@ -5,16 +5,16 @@ import type { Plugin } from '@/types';
 
 import { createLocaleSlice, type LocaleStoreProps } from './createLocale';
 import {
-  createMicroAppStateSlice,
-  type MicroAppStateStoreProps,
+  createMicroAppLoadingSlice,
+  type MicroAppLoadingStoreProps,
 } from './createMicroAppLoading';
 import { createThemeSlice, type ThemeStoreProps } from './createTheme';
 import { createUserInfoSlice, type UserInfoStoreProps } from './createUserInfo';
 
-type StoreOptions = UserInfoStoreProps &
-  LocaleStoreProps &
-  MicroAppStateStoreProps &
-  ThemeStoreProps;
+type StoreOptions = LocaleStoreProps &
+  MicroAppLoadingStoreProps &
+  ThemeStoreProps &
+  UserInfoStoreProps;
 
 type StoreResults = typeof globalStore;
 
@@ -25,7 +25,7 @@ type StoreResults = typeof globalStore;
 const globalStore = createStore<StoreOptions>()(
   subscribeWithSelector((...a) => ({
     ...createLocaleSlice(...a),
-    ...createMicroAppStateSlice(...a),
+    ...createMicroAppLoadingSlice(...a),
     ...createThemeSlice(...a),
     ...createUserInfoSlice(...a),
   })),
