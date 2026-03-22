@@ -1,5 +1,5 @@
 import { type AxiosInstance, type CreateAxiosDefaults } from 'axios';
-import { merge } from 'es-toolkit';
+import { merge } from 'es-toolkit/object';
 import type { RouteObject } from 'react-router-dom';
 
 import type { Plugin, UserInfo } from '@/types';

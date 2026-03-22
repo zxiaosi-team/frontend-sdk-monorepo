@@ -1,6 +1,6 @@
 import type { ProLayoutProps } from '@ant-design/pro-layout';
 import type { ConfigProviderProps } from 'antd';
-import { merge } from 'es-toolkit';
+import { merge } from 'es-toolkit/object';
 import type { RouteObject } from 'react-router-dom';
 
 import type { LocaleProps, Plugin, ThemeProps } from '@/types';

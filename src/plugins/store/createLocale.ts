@@ -1,3 +1,4 @@
+import { merge } from 'es-toolkit/object';
 import intl from 'react-intl-universal';
 import type { StateCreator } from 'zustand';
 
@@ -32,7 +33,7 @@ const createLocaleSlice: StateCreator<LocaleStoreProps> = (set, get) => ({
     // 加载 Antd 语言包
     try {
       const localeData = sdk.i18n.loadLocale?.(locale) || undefined;
-      sdk.config.antdConfig.locale = localeData;
+      merge(sdk.config.antdConfig, { locale: localeData });
     } catch (e) {
       console.error('Sdk: createLocaleSlice - sdk.i18n.loadLocale error:', e);
     }
