@@ -6,6 +6,7 @@ import { sdk } from '@/core';
 import type { ThemeProps } from '@/types';
 
 const { defaultAlgorithm, darkAlgorithm } = antdTheme;
+
 interface ThemeStoreProps {
   /** 主题 */
   theme: ThemeProps;
