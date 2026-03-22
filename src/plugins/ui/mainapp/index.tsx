@@ -57,14 +57,14 @@ const Mainapp: React.FC = () => {
   const [loading, setLoading] = useState(false); // 加载状态(获取初始化数据时)
   const [routes, setRoutes] = useState<RouteObject[]>(defaultRoutes); // 路由
 
-  const [locale, setLocale, theme, setTheme, setInitState] = useStore(
+  const [locale, setLocale, theme, setTheme, setUserInfo] = useStore(
     sdk.store,
     useShallow((state) => [
       state.locale,
       state.setLocale,
       state.theme,
       state.setTheme,
-      state.setInitState,
+      state.setUserInfo,
     ]),
   );
 
@@ -87,7 +87,7 @@ const Mainapp: React.FC = () => {
       setLoading(() => false);
 
       // 设置用户信息
-      setInitState(userData);
+      setUserInfo(userData);
 
       // 设置主题和语言(每个用户配置的主题和语言)
       const { theme, locale } = userData?.settings || {};
