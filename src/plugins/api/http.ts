@@ -7,7 +7,7 @@ import axios, {
   type CreateAxiosDefaults,
   type InternalAxiosRequestConfig,
 } from 'axios';
-import { merge } from 'es-toolkit';
+import { merge } from 'es-toolkit/object';
 
 import { sdk } from '@/core';
 import { cancelRequestUtil, generateRequestIdUtil } from '@/utils';

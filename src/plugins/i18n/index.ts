@@ -1,4 +1,4 @@
-import { merge } from 'es-toolkit';
+import { merge } from 'es-toolkit/object';
 import intl from 'react-intl-universal';
 
 import type { Plugin } from '@/types';

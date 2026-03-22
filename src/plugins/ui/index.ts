@@ -1,4 +1,4 @@
-import { merge } from 'es-toolkit';
+import { merge } from 'es-toolkit/object';
 import { type ComponentType, createElement, type ReactElement } from 'react';
 
 import type { Plugin } from '@/types';

@@ -1,5 +1,5 @@
 import { theme as antdTheme } from 'antd';
-import { merge } from 'es-toolkit';
+import { merge } from 'es-toolkit/object';
 import type { StateCreator } from 'zustand';
 
 import { sdk } from '@/core';

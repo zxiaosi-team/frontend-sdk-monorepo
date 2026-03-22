@@ -1,4 +1,4 @@
-import { merge } from 'es-toolkit';
+import { merge } from 'es-toolkit/object';
 
 import type { LocaleProps, Plugin, ThemeProps } from '@/types';
 
