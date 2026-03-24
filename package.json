@@ -29,7 +29,6 @@
     "dev": "tsdown --watch"
   },
   "dependencies": {
-    "@ant-design/pro-layout": "^7.22.7",
     "axios": "^1.13.6",
     "qiankun": "^2.10.16",
     "react-intl-universal": "^2.13.4"
@@ -42,6 +41,7 @@
     "typescript": "^5.9.3"
   },
   "peerDependencies": {
+    "@ant-design/pro-layout": "^7.22.7",
     "antd": "^5.29.0 || ^6.0.0",
     "react": "^18.3.1 || >=19.0.0",
     "react-dom": "^18.3.1 || >=19.0.0",
