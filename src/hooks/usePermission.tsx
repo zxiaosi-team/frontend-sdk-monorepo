@@ -2,7 +2,6 @@ import { useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 
 import { sdk } from '@/core';
-import { isPermissionUtil } from '@/utils';
 
 /**
  * 判断是否有权限
@@ -13,7 +12,7 @@ const usePermission = (code?: string) => {
 
   const isAuth = useMemo(() => {
     const permission = code || sdk.client.location.pathname;
-    return isPermissionUtil(permission);
+    return sdk.app.permissions?.includes?.(permission);
   }, [location.pathname, code]);
 
   return isAuth;
