@@ -1,67 +1,96 @@
-import ProLayout from '@ant-design/pro-layout';
-import { Suspense } from 'react';
-import { Outlet, useLocation, useMatches, useNavigate } from 'react-router-dom';
-import { useStore } from 'zustand';
+import { Suspense, useEffect } from 'react';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 
 import { sdk } from '@/core';
+
+import './index.css';
+
+/** 菜单组件 */
+const Menu: React.FC<{ items: any[] }> = ({ items = [] }) => {
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  if (!items || items.length === 0) return null;
+
+  return items.map((item) => {
+    const { key, name, path, locale, children, hideInMenu = false } = item;
+
+    let isAllowClick = true;
+    if (
+      children &&
+      children.length > 0 &&
+      children.filter((_) => !_.hideInMenu).length > 0
+    ) {
+      isAllowClick = false;
+    }
+
+    return (
+      <li key={key} className='sdk-layout-menu-item'>
+        <div
+          className='sdk-layout-menu-item-title'
+          style={{
+            ...(location.pathname === path
+              ? { background: '#e6f4ff', color: '#1677ff' }
+              : {}),
+            ...(hideInMenu ? { display: 'none' } : {}),
+            cursor: isAllowClick ? 'pointer' : 'not-allowed',
+          }}
+          onClick={() => (isAllowClick ? navigate(path) : {})}
+        >
+          {sdk.i18n.intl.get(locale) || name}
+        </div>
+        <ul className='sdk-layout-menu-sub'>
+          <Menu items={children} />
+        </ul>
+      </li>
+    );
+  });
+};
 
 /** 布局组件 */
 const Layout: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const matches = useMatches();
-
-  const locale = useStore(sdk.store, (state) => state.locale);
-
-  const currentMatch = matches[matches.length - 1]?.handle?.crumb() || {};
-  const noLayout = JSON.parse(currentMatch?.routeAttr || '{}')?.noLayout;
-
-  /** 菜单点击事件 */
-  const handleMenuClick = (item: any) => {
-    navigate(item.path);
-  };
 
   /** 菜单头点击事件 */
-  const handleMenuHeaderClick = () => {
+  const handleHeaderClick = () => {
     navigate('/');
   };
 
-  /** 页面切换事件 */
-  const handlePageChange = (location: Location) => {
+  /** 退出登录 */
+  const handleLogoutClick = () => {
+    sdk.app.pageToLogin();
+  };
+
+  useEffect(() => {
     // 是否有用户信息
     if (!sdk.app.user || Object.keys(sdk.app.user).length === 0)
       return sdk.app.pageToLogin();
-  };
+
+    navigate(location.pathname);
+  }, [location.pathname]);
 
   return (
-    <ProLayout
-      locale={locale as any}
-      formatMessage={({ id, defaultMessage }) =>
-        sdk.i18n.intl.get(id).d(defaultMessage)
-      }
-      location={location}
-      menuItemRender={(item, dom) => (
-        <div onClick={() => handleMenuClick(item)}>{dom}</div>
-      )}
-      onMenuHeaderClick={handleMenuHeaderClick}
-      onPageChange={handlePageChange}
-      {...(noLayout && {
-        headerRender: false,
-        footerRender: false,
-        menuRender: false,
-      })}
-      menu={{
-        request: async () => sdk.app.menuData || [],
-        ...sdk.config.proLayoutConfig.menu,
-      }}
-      {...sdk.config.proLayoutConfig}
-    >
-      <Suspense
-        fallback={sdk.ui.renderComponent('Loading', { isSuspense: true })}
-      >
-        <Outlet />
-      </Suspense>
-    </ProLayout>
+    <div className='sdk-layout'>
+      <div className='sdk-layout-header'>
+        <div onClick={handleHeaderClick}>Logo</div>
+        <button onClick={handleLogoutClick}>退出登录</button>
+      </div>
+
+      <div className='sdk-layout-content'>
+        <ul className='sdk-layout-menu'>
+          <Menu items={sdk.app.menuData || []} />
+        </ul>
+
+        <div className='sdk-layout-outlet'>
+          <Suspense
+            fallback={sdk.ui.renderComponent('Loading', { isSuspense: true })}
+          >
+            <Outlet />
+          </Suspense>
+        </div>
+      </div>
+    </div>
   );
 };
 
