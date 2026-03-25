@@ -1,0 +1,75 @@
+:root[theme='dark'] {
+  --sdk-bg-color: #141414;
+  --sdk-text-color: rgba(255, 255, 255, 0.85);
+  --sdk-border-color: rgba(255, 255, 255, 0.15);
+}
+
+:root[theme='light'] {
+  --sdk-bg-color: #fff;
+  --sdk-text-color: rgba(0, 0, 0, 0.85);
+  --sdk-border-color: rgba(0, 0, 0, 0.15);
+}
+
+.sdk-layout {
+  height: 100vh;
+  color: var(--sdk-text-color);
+  background: var(--sdk-bg-color);
+}
+
+.sdk-layout-header {
+  height: 64px;
+  line-height: 64px;
+  padding: 0 24px;
+  border-bottom: 1px solid var(--sdk-border-color);
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sdk-layout-content {
+  height: calc(100vh - 64px);
+  display: flex;
+}
+
+.sdk-layout-menu {
+  width: 200px;
+  height: 100%;
+  box-sizing: border-box;
+  border-right: 1px solid var(--sdk-border-color);
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  padding: 8px;
+}
+
+.sdk-layout-outlet {
+  overflow: auto;
+  flex: 1;
+  padding: 24px;
+}
+
+.sdk-layout-menu-item {
+  margin-bottom: 6px;
+}
+
+.sdk-layout-menu-item-title {
+  padding: 8px 12px;
+}
+
+.sdk-layout-menu-item-title:hover {
+  color: #1677ff;
+  background: #e6f4ff;
+  cursor: pointer;
+}
+
+.sdk-layout-menu-sub {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sdk-layout-menu-sub .sdk-layout-menu-item-title {
+  padding-left: 24px;
+  margin-top: 8px;
+}
