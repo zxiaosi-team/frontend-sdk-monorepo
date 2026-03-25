@@ -4,8 +4,6 @@ import { Outlet, type RouteObject } from 'react-router-dom';
 
 import { sdk } from '@/core';
 
-import { isPermissionUtil } from './permission';
-
 type MicroAppsMap = Map<string, RegistrableApp<ObjectType>>;
 
 /**
@@ -74,9 +72,7 @@ export const transformRoutesUtil = (
     } else if (component === 'Outlet') {
       element = <Outlet />; // 路由出口组件
     } else {
-      // TODO: 将 isPermissionUtil 提到主应用中
-      const isAuth = isPermissionUtil(path); // 是否有权限
-      element = sdk.ui.renderComponent(isAuth ? component : 'NoPermission'); // 普通组
+      element = sdk.ui.renderComponent(component); // 普通组件
     }
 
     return {
@@ -84,10 +80,8 @@ export const transformRoutesUtil = (
       key: `${path}_${icon}_${locale}`, // 唯一key, 判断菜单是否折叠
       element,
       children: transformRoutesUtil(children, microAppsMap), // 转换子路由
-      handle: {
-        // 用户面包屑 https://reactrouter.com/6.30.2/hooks/use-matches
-        crumb: (data = {}) => ({ ...item, ...data }),
-      },
+      // 用户面包屑 https://reactrouter.com/6.30.2/hooks/use-matches
+      handle: item,
     };
   });
 };
