@@ -1,4 +1,3 @@
-import type { ProLayoutProps } from '@ant-design/pro-layout';
 import type { ConfigProviderProps } from 'antd';
 import { merge } from 'es-toolkit/object';
 import type { RouteObject } from 'react-router-dom';
@@ -46,8 +45,7 @@ interface ConfigOptions {
 
   /** Antd 配置 */
   antdConfig?: ConfigProviderProps;
-  /** ProLayout 配置 */
-  proLayoutConfig?: ProLayoutProps;
+  [key: string]: any;
 }
 
 interface ConfigResults extends Required<ConfigOptions> {}
@@ -81,9 +79,6 @@ const SdkConfigPlugin: Plugin<'config'> = {
       customRoutes: [],
 
       antdConfig: {},
-      proLayoutConfig: {
-        title: 'Demo',
-      },
     } satisfies ConfigResults;
 
     sdk[pluginName] = merge(defaultOptions, options);

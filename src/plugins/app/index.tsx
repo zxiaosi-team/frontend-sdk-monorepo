@@ -1,4 +1,3 @@
-import type { MenuDataItem } from '@ant-design/pro-layout';
 import { merge } from 'es-toolkit/object';
 import type { MicroApp, ObjectType, RegistrableApp } from 'qiankun';
 import type { RouteObject } from 'react-router-dom';
@@ -7,7 +6,7 @@ import type { Plugin, UserInfo } from '@/types';
 
 interface AppOptions {
   /** 菜单数据 */
-  menuData?: MenuDataItem[];
+  menuData?: any[];
   /** 所有路由信息 */
   allRoutes?: RouteObject[];
 
