@@ -1,21 +1,23 @@
-import { Button, Flex, Form, type FormProps, Input, theme } from 'antd';
 import { useState } from 'react';
 
 import { sdk } from '@/core';
 
-const { useToken } = theme;
+import './index.css';
 
 /** 登录组件 */
 const Login: React.FC = () => {
-  const { token: themeToken } = useToken();
-
   const [loading, setLoading] = useState(false);
+  const [username, setUsername] = useState('admin');
+  const [password, setPassword] = useState('123456');
 
   /** 表单提交成功事件 */
-  const handleFinish: FormProps['onFinish'] = async (values) => {
+  const handleFinish = async (e) => {
+    if (loading) return;
+    e.preventDefault();
+
     try {
       setLoading(() => true);
-      const resp = await sdk.api.loginApi(values);
+      const resp = await sdk.api.loginApi({ userName: username, password });
       setLoading(() => false);
 
       const token = resp?.data?.token || '';
@@ -37,47 +39,39 @@ const Login: React.FC = () => {
   };
 
   return (
-    <Flex
-      style={{
-        width: '100%',
-        height: '100%',
-        background: themeToken.colorBgContainer,
-      }}
-      justify={'center'}
-      align={'center'}
-    >
-      <Form
-        labelCol={{ span: 8 }}
-        labelAlign='left'
-        wrapperCol={{ span: 16 }}
-        style={{ maxWidth: 600 }}
-        initialValues={{ username: 'admin', password: 'admin' }}
-        onFinish={handleFinish}
-        autoComplete='off'
-      >
-        <Form.Item
-          label='用户名'
-          name='username'
-          rules={[{ required: true, message: '请输入用户名!' }]}
-        >
-          <Input />
-        </Form.Item>
+    <div className='sdk-login'>
+      <form className='sdk-login-form'>
+        <div className='sdk-login-form-group'>
+          <label>用 户 名</label>
+          <div className='sdk-login-form-group-input'>
+            <input
+              type='text'
+              value={username}
+              placeholder='your@email.com 或 昵称'
+              onChange={(e) => setUsername(e.target.value)}
+            />
+            <div>{username ? '' : '请输入用户名'}</div>
+          </div>
+        </div>
 
-        <Form.Item
-          label='密码'
-          name='password'
-          rules={[{ required: true, message: '请输入密码!' }]}
-        >
-          <Input.Password />
-        </Form.Item>
+        <div className='sdk-login-form-group'>
+          <label>密 码</label>
+          <div className='sdk-login-form-group-input'>
+            <input
+              type='password'
+              value={password}
+              placeholder='请输入密码'
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <div>{password ? '' : '请输入密码'}</div>
+          </div>
+        </div>
 
-        <Form.Item noStyle>
-          <Button block type='primary' htmlType='submit' loading={loading}>
-            登录
-          </Button>
-        </Form.Item>
-      </Form>
-    </Flex>
+        <button className='sdk-login-form-btn' onClick={handleFinish}>
+          {loading ? '登录中...' : '登录'}
+        </button>
+      </form>
+    </div>
   );
 };
 
