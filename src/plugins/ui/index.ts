@@ -7,7 +7,6 @@ import './index.css';
 import Layout from './layout';
 import Loading from './loading';
 import Login from './login';
-import Mainapp from './mainapp';
 import Microapp from './microapp';
 import NoPermission from './noPermission';
 import NotFound from './notFound';
@@ -58,7 +57,6 @@ const SdkUIPlugin: Plugin<'ui'> = {
       Layout,
       Loading,
       Login,
-      Mainapp,
       Microapp,
       NotFound,
       NoPermission,
