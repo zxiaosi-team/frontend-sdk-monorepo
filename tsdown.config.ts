@@ -7,6 +7,7 @@ const config = defineConfig({
   format: 'esm', // 输出格式
   minify: true, // 压缩代码
   css: {
+    inject: true, // 保留 css 注入
     minify: true, // 压缩 css
   },
 });
