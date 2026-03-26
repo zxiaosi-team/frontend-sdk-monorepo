@@ -24,30 +24,6 @@ interface I18nOptions {
    * }
    */
   intlConfig?: Record<string, any>;
-  /**
-   * 加载语言包
-   * @param locale 语言包名
-   * @example
-   * import enUS from 'antd/es/locale/en_US';
-   * import zhCN from 'antd/es/locale/zh_CN';
-   * import dayjs from 'dayjs';
-   * import 'dayjs/locale/en';
-   * import 'dayjs/locale/zh';
-   *
-   * const loadLocale = (locale: string) => {
-   *   switch (locale) {
-   *     case 'en-US':
-   *       dayjs.locale('en');
-   *       return enUS;
-   *     case 'zh-CN':
-   *       dayjs.locale('zh');
-   *       return zhCN;
-   *     default:
-   *       return undefined;
-   *   }
-   * }
-   */
-  loadLocale?(locale: string): any;
 }
 
 interface I18nResults extends Required<I18nOptions> {}
@@ -58,7 +34,7 @@ const pluginName = 'i18n';
 /**
  * 多语言
  * - 详情参考 {@link I18nOptions} {@link I18nResults}
- * - 集成 React Intl Universal 和 Antd 国际化
+ * - 集成 React Intl Universal
  * - 需要从外部引入语言包, 详见 intlConfig 和 loadLocale 配置项
  */
 const SdkI18nPlugin: Plugin<'i18n'> = {
@@ -68,7 +44,6 @@ const SdkI18nPlugin: Plugin<'i18n'> = {
     const defaultOptions = {
       intl: intl,
       intlConfig: {},
-      loadLocale: (locale: string) => undefined,
     } satisfies I18nResults;
 
     sdk[pluginName] = merge(defaultOptions, options);
