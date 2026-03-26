@@ -3,6 +3,7 @@ import { type ComponentType, createElement, type ReactElement } from 'react';
 
 import type { Plugin } from '@/types';
 
+import './index.css';
 import Layout from './layout';
 import Loading from './loading';
 import Login from './login';
