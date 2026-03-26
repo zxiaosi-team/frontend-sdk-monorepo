@@ -1,4 +1,3 @@
-import type { ConfigProviderProps } from 'antd';
 import { merge } from 'es-toolkit/object';
 import type { RouteObject } from 'react-router-dom';
 
@@ -43,8 +42,6 @@ interface ConfigOptions {
    */
   customRoutes?: RouteObject[];
 
-  /** Antd 配置 */
-  antdConfig?: ConfigProviderProps;
   [key: string]: any;
 }
 
@@ -60,7 +57,6 @@ const pluginName = 'config';
  * - 配置 默认主题、语言
  * - 配置 Qiankun 模式
  * - 配置 默认登录路径、跳转路径、自定义路由
- * - 配置 Antd 配置、ProLayout 配置
  */
 const SdkConfigPlugin: Plugin<'config'> = {
   name: pluginName,
@@ -77,8 +73,6 @@ const SdkConfigPlugin: Plugin<'config'> = {
       loginPath: '/login',
       defaultPath: '',
       customRoutes: [],
-
-      antdConfig: {},
     } satisfies ConfigResults;
 
     sdk[pluginName] = merge(defaultOptions, options);

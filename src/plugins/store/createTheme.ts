@@ -1,11 +1,7 @@
-import { theme as antdTheme } from 'antd';
-import { merge } from 'es-toolkit/object';
 import type { StateCreator } from 'zustand';
 
 import { sdk } from '@/core';
 import type { ThemeProps } from '@/types';
-
-const { defaultAlgorithm, darkAlgorithm } = antdTheme;
 
 interface ThemeStoreProps {
   /** 主题 */
@@ -27,10 +23,6 @@ const createThemeSlice: StateCreator<ThemeStoreProps> = (set, get) => ({
 
     // 设置作用域
     document.documentElement.setAttribute('theme', theme);
-
-    // 设置Antd主题算法
-    const algorithm = theme === 'light' ? defaultAlgorithm : darkAlgorithm;
-    merge(sdk.config.antdConfig, { theme: { algorithm } });
   },
 });
 

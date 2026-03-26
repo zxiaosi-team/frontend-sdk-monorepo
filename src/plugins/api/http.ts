@@ -1,4 +1,3 @@
-import { message } from 'antd';
 import axios, {
   AxiosError,
   type AxiosInstance,
@@ -73,7 +72,8 @@ class Http {
 
         // 跟后端定义的成功标识 非0的都是失败
         if (code !== 0) {
-          if (isShowFailMsg) message.error(msg);
+          // TODO: 处理错误
+          // if (isShowFailMsg) message.error(msg);
           console.error(
             'Sdk: defaultResponseInterceptor - Response error: ',
             config.url,
@@ -98,13 +98,13 @@ class Http {
           // 请求成功发出且服务器也响应了状态码，但状态代码超出了 2xx 的范围
           const { status, data, statusText } = response as AxiosResponse;
 
-          if (isShowFailMsg) message.error(data.msg || statusText);
+          // if (isShowFailMsg) message.error(data.msg || statusText);
 
           if (status == 401) sdk.app.pageToLogin(); // 登录过期，跳转登录页
         } else {
           // 请求已经成功发起，但没有收到响应
-          if (isShowFailMsg)
-            message.error('请求超时或服务器异常，请检查网络或联系管理员');
+          // if (isShowFailMsg)
+          //   message.error('请求超时或服务器异常，请检查网络或联系管理员');
 
           console.error(
             'Sdk: defaultResponseInterceptor - Request error:',
