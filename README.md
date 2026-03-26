@@ -9,6 +9,7 @@
 ## 快速开始
 
 ```bash
+# 安装 @zxiaosi/sdk 对应的版本 0.5.x
 npm install -g @zxiaosi/create-sdk
 
 npx create-sdk
@@ -18,29 +19,19 @@ npx create-sdk
 
 - 整个 `SDK` 都是围绕 `getRoutesApi`、`getUserInfoApi` 这两个接口进行设计的，旨在简化微前端应用的开发
 
-- `getRoutesApi` 接口用于获取应用路由信息，包括主应用和微应用的路由配置。因为 `Qiankun` 的 `entry` 配置比较特殊，在本地开发时是本地服务 `"entry": "http://localhost:5174"`，在生产环境是文件路径 `"entry": "/subapp/"`，所以 `主应用` 需要使用 `vite-plugin-mock` 插件 `mock` 接口
+- `getRoutesApi` 接口用于获取应用路由信息，包括主应用和微应用的路由配置。因为 `Qiankun` 的 `entry` 配置比较特殊，所以 `主应用` 需要使用 `vite-plugin-mock` 插件 `mock` 接口
+  - 在本地开发是本地服务 `"entry": "http://localhost:5174"`
+  - 在生产环境是文件路径 `"entry": "/subapp/"`
 
-- `getUserInfoApi` 接口用于获取用户 `user`、权限 `permissions`、角色 `role`、配置信息 `setting`，以便进行权限控制和个性化设置。理论上来说 `permissions` 中应当包含 `getRoutesApi` 中的所有的路由路径，否则页面出走 `<NotPermission />` 组件。（目前的方案是所有的组件手动包一层 `<NotPermission />`，不在 `SDK` 中处理权限控制）
+- `getUserInfoApi` 接口用于获取用户相关数据，以便进行权限控制和个性化设置。
+  - `user`：用户信息（必选）
+  - `permissions`：权限信息（必选）
+  - `role`：角色信息（可选）
+  - `setting`：配置信息（可选）
 
-- 微应用使用 `sdk.ui.renderComponent('xxx')` 时，会报 `React 多实例` 的错误，需要使用 `vite-plugin-externals` 插件将 `React` 等依赖排除在打包之外，[更多详情](https://zxiaosi.com/archives/bc84a75a.html)
-
-- 微应用启动服务时需要加上 `--host` 参数，否则可能会出现微应用静态资源访问不到的情况。完整命令 `"dev": "vite --host"`
-
-- `SDK` 不能在 `组件外` 进行使用，否则会报 `SDK 未初始化` 错误
-
-## 具体使用
+## 核心代码
 
 ### 主应用
-
-- 安装依赖
-
-  ```sh
-  // 必须的依赖
-  npm install react react-dom react-router-dom@6.30.2 zustand @zxiaosi/sdk
-
-  // 可选的依赖
-  npm install antd dayjs
-  ```
 
 - 在 `main.ts` 中进行 `SDK` 的挂载
 
@@ -59,23 +50,29 @@ npx create-sdk
   import { createRoot } from 'react-dom/client';
   import App from './App';
 
+  const getRoutesApi = async () => ({
+    code: 0,
+    data: [
+      { path: '/home', name: '首页', component: 'Home' },
+      { path: '/subapp', name: '微应用', component: 'Microapp',
+        routeAttr: `{"name": "subapp", "entry": "http://localhost:5174", "activeRule": "/subapp", "rootId": "sub-app"}`,
+      },
+    ],
+  })
+
+  const getUserInfoApi = async () => ({
+     code: 0,
+    data: { user: {}, permissions: ['/home', '/subapp'], roles: [], settings: {} },
+  })
+
+  const loginApi = async () => ({ code: 0, data: { token: 'xxxx' } })
+
   /** 挂载 SDK */
   sdk
     .use(SdkApiPlugin, {
-      getRoutesApi: async () => ({
-        code: 0,
-        data: [
-          { path: '/home', name: '首页', component: 'Home' },
-          { path: '/subapp', name: '微应用', component: 'Microapp',
-            routeAttr: `{"name": "subapp", "entry": "http://localhost:5174", "activeRule": "/subapp", "rootId": "sub-app"}`,
-          },
-        ],
-      }),
-      getUserInfoApi: async () => ({
-        code: 0,
-        data: { user: {}, permissions: ['/home', '/subapp'], roles: [], settings: {} },
-      }),
-      loginApi: async () => ({ code: 0, data: { token: 'xxxx' } }),
+      getRoutesApi,
+      getUserInfoApi,
+      loginApi,
     })
     .use(SdkAppPlugin)
     .use(SdkClientPlugin)
@@ -110,17 +107,6 @@ npx create-sdk
   ```
 
 ### 微应用
-
-- 安装依赖
-
-  ```sh
-  // 必须的依赖
-  npm install react react-dom react-router-dom@6.30.2 zustand @zxiaosi/sdk
-  npm install vite-plugin-qiankun-lite --save-dev
-
-  // 可选的依赖
-  npm install antd dayjs
-  ```
 
 - 在 `vite.config.ts` 中配置 `vite-plugin-qiankun-lite` 插件
 
@@ -163,10 +149,6 @@ npx create-sdk
     render();
   }
 
-  export async function bootstrap() {
-    console.log(`Microapp bootstrap`);
-  }
-
   export async function mount(props: any) {
     console.log(`Microapp mount`, props);
     sdk.extend('sdk'); // 继承 sdk 功能
@@ -177,10 +159,47 @@ npx create-sdk
     console.log(`Microapp unmount`, props);
     root.unmount();
   }
-
-  export async function update(props: any) {
-    console.log(`Microapp update`, props);
-  }
   ```
 
 - [可参考项目](https://github.com/zxiaosi-team/fontend-sdk/tree/master/packages)
+
+## 注意事项
+
+- `SDK` 不能在 `组件外` 进行使用，否则会报 `SDK 未初始化` 错误
+
+- 微应用使用 `sdk.ui.renderComponent('xxx')` 时，会报 `React 多实例` 的错误，需要使用 `vite-plugin-externals` 插件将 `React` 等依赖排除在打包之外。[更多详情](https://zxiaosi.com/archives/bc84a75a.html)
+  - 在主/子应用的 `index.html` 中使用 `cdn` 的方式去加载 `react` 和 `react-dom` 包
+
+    ```html
+    <!doctype html>
+    <html lang="en">
+      <head>
+        <title>%VITE_APP_TITLE%</title>
+        <script src="https://unpkg.com/react@18.3.1/umd/react.development.js"></script>
+        <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js"></script>
+      </head>
+      <body>
+        <div id="root"></div>
+        <script type="module" src="/src/main.tsx"></script>
+      </body>
+    </html>
+    ```
+
+  - 在主/子应用中使用 `vite-plugin-externals` 插件去排除 `react` 和 `react-dom` 包
+
+    ```ts
+    import { viteExternalsPlugin } from 'vite-plugin-externals';
+
+    export default defineConfig({
+      plugins: [
+        viteExternalsPlugin({
+          react: 'React',
+
+          // 开发环境不排除 react-dom 依赖, 防止热更新失效
+          // 或者 浏览器安装 React Developer Tools 插件
+          'react-dom': 'ReactDOM',
+          'react-dom/client': 'ReactDOM',
+        }),
+      ],
+    });
+    ```
