@@ -1,6 +1,4 @@
-import { theme } from 'antd';
-
-const { useToken } = theme;
+import './index.css';
 
 interface Props {
   /** 是否是初始化数据 */
@@ -17,25 +15,8 @@ const Loading: React.FC = ({
   isSuspense = false,
   isMicroApp = false,
 }: Props) => {
-  const { token } = useToken();
   return (
-    <div
-      style={
-        isInitData
-          ? {
-              width: '100%',
-              height: '100%',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              background: token.colorBgContainer,
-              color: token.colorText,
-            }
-          : {}
-      }
-    >
-      Loading...
-    </div>
+    <div className={`${isInitData ? 'sdk-loading-init' : ''}`}>Loading...</div>
   );
 };
 
