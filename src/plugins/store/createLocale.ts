@@ -1,4 +1,3 @@
-import intl from 'react-intl-universal';
 import type { StateCreator } from 'zustand';
 
 import { sdk } from '@/core';
@@ -24,10 +23,6 @@ const createLocaleSlice: StateCreator<LocaleStoreProps> = (set, get) => ({
 
     // 设置作用域
     document.documentElement.setAttribute('lang', locale);
-
-    // 设置 React Intl Universal 语言包
-    const intlConfig = sdk.i18n.intlConfig;
-    intl.init({ currentLocale: locale, locales: intlConfig });
   },
 });
 
