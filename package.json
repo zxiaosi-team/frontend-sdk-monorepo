@@ -33,8 +33,7 @@
     "dev": "tsdown --watch"
   },
   "dependencies": {
-    "axios": "^1.13.6",
-    "qiankun": "^2.10.16"
+    "axios": "^1.13.6"
   },
   "devDependencies": {
     "@tsdown/css": "^0.21.6",
@@ -45,9 +44,27 @@
     "typescript": "^5.9.3"
   },
   "peerDependencies": {
+    "qiankun": "^2.10.16",
     "react": "^18.3.1 || >=19.0.0",
     "react-dom": "^18.3.1 || >=19.0.0",
     "react-router-dom": "^6.30.0",
     "zustand": "^5.0.0"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": false
+    },
+    "react-dom": {
+      "optional": false
+    },
+    "react-router-dom": {
+      "optional": false
+    },
+    "qiankun": {
+      "optional": true
+    },
+    "zustand": {
+      "optional": true
+    }
   }
 }
