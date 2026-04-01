@@ -14,9 +14,9 @@ const useCrumb = () => {
 
   let crumbs = matches
     // @ts-ignore
-    .filter((match) => Boolean(match.handle?.crumb))
+    .filter((match) => Boolean(match.handle))
     // @ts-ignore
-    .map((match) => match.handle.crumb(match.data));
+    .map((match) => match.handle);
 
   return crumbs;
 };
