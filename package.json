@@ -36,11 +36,11 @@
     "axios": "^1.13.6"
   },
   "devDependencies": {
-    "@tsdown/css": "^0.21.6",
+    "@tsdown/css": "^0.22.0",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
-    "es-toolkit": "^1.45.1",
-    "tsdown": "^0.21.6",
+    "es-toolkit": "^1.47.0",
+    "tsdown": "^0.22.0",
     "typescript": "^5.9.3"
   },
   "peerDependencies": {
