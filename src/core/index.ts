@@ -1,88 +1,33 @@
-import type { Plugin, PluginOptions, SdkResult } from '@/types';
+import type { AnyObject, Plugin } from './types';
 
-class Sdk implements SdkResult {
-  name: SdkResult['name'];
-  _plugins: SdkResult['_plugins'];
-
-  api: SdkResult['api'];
-  app: SdkResult['app'];
-  client: SdkResult['client'];
-  config: SdkResult['config'];
-  i18n: SdkResult['i18n'];
-  storage: SdkResult['storage'];
-  store: SdkResult['store'];
-  ui: SdkResult['ui'];
-
-  constructor() {
-    this.name = '';
-    this._plugins = new Map();
-  }
+/** SDK 类 */
+class SDK<T extends AnyObject = {}> {
+  name?: string;
 
   mount(name: string) {
-    if (window[name]) throw new Error(`The SDK already exists - ${name}`);
-    console.log(
-      '%c SDK mounted:',
-      'color: pink; font-weight: bold;',
-      name,
-      sdk,
-    );
+    this.name = name; // 设置名称
 
-    // 设置名称
-    this.name = name;
-
-    // 使用 new Proxy 禁止控制台对sdk属性的操作 (仅第一层属性)
-    const _this = new Proxy(this, {
-      get: (target, key, receiver) => {
-        if (!target) return null;
-        return Reflect.get(target, key, receiver);
-      },
-      set: () => {
-        console.error('The SDK cannot be modified.');
-        return false;
-      },
-      deleteProperty: () => {
-        console.error('The SDK cannot be deleted.');
-        return false;
-      },
-    });
-
-    // 挂载到 Window 上
-    window[this.name] = _this;
+    window[name] = this; // 挂载到 Window 上
   }
 
   extend(name: string) {
-    if (!window[name]) throw new Error(`The SDK not found - ${name}`);
-    console.log('%c SDK extended:', 'color: pink; font-weight: bold;', name);
+    const target = window[name]; // 从 Window 上获取实例
 
-    // 合并实例属性
-    Object.assign(this, window[name]);
+    if (!target) throw new Error(`SDK "${name}" not found`);
+
+    Object.assign(this, target); // 合并实例属性
   }
 
-  use<K extends keyof PluginOptions>(
-    plugin: Plugin<K>,
-    options?: PluginOptions[K],
-  ) {
-    const { name, install } = plugin;
+  use<U extends AnyObject>(plugin: Plugin<U>): SDK<T & U> & T & U {
+    const result = plugin(this); // 执行插件函数
 
-    if (!name) throw new Error(`${name} plugin has no name`);
+    Object.assign(this, result); // 合并插件返回的属性
 
-    if (typeof install !== 'function')
-      throw new Error(`${name} plugin is not a function`);
-
-    // 插件安装
-    install(this, options);
-
-    // 添加到插件列表
-    this._plugins.set(name, { ...plugin, options });
-
-    // 链式调用
-    return this;
+    return this as any; // 返回合并后的 SDK 实例
   }
 }
 
-/**
- * sdk 实例
- */
-const sdk = new Sdk();
-
-export { sdk };
+/** 创建 SDK 实例 */
+export function createSdk() {
+  return new SDK();
+}
