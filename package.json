@@ -36,11 +36,11 @@
     "axios": "^1.13.6"
   },
   "devDependencies": {
-    "@tsdown/css": "^0.22.0",
+    "@tsdown/css": "^0.22.1",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "es-toolkit": "^1.47.0",
-    "tsdown": "^0.22.0",
+    "tsdown": "^0.22.1",
     "typescript": "^5.9.3"
   },
   "peerDependencies": {
@@ -49,22 +49,5 @@
     "react-dom": "^18.3.1 || >=19.0.0",
     "react-router-dom": "^6.30.0",
     "zustand": "^5.0.0"
-  },
-  "peerDependenciesMeta": {
-    "react": {
-      "optional": false
-    },
-    "react-dom": {
-      "optional": false
-    },
-    "react-router-dom": {
-      "optional": false
-    },
-    "qiankun": {
-      "optional": true
-    },
-    "zustand": {
-      "optional": true
-    }
   }
 }
