@@ -28,6 +28,8 @@ class SDKCore {
   use<T extends Record<string, any>>(plugin: SDKPlugin<T, this>): this & T {
     const result = plugin(this); // 执行插件函数
 
+    this._plugins.set(plugin.name, plugin); // 存储插件
+
     Object.assign(this, result); // 合并插件返回的属性
 
     return this as any; // 返回合并后的 SDK 实例

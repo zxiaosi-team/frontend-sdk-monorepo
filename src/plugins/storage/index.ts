@@ -39,7 +39,7 @@ const defaultOptions: StorageModule = {
 };
 
 /** 本地缓存插件 */
-function SDKStroagePlugin(options?: SDKPluginOptions) {
+function SDKStoragePlugin(options?: SDKPluginOptions) {
   return (sdk: SDKInstance) => {
     let realOptions: SDKModulesOptions = {};
 
@@ -53,5 +53,5 @@ function SDKStroagePlugin(options?: SDKPluginOptions) {
   };
 }
 
-export { SDKStroagePlugin };
+export { SDKStoragePlugin };
 export type { StorageModule };
