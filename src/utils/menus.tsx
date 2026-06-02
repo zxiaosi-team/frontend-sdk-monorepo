@@ -2,7 +2,7 @@ import type { ObjectType, RegistrableApp } from 'qiankun';
 import { createElement } from 'react';
 import { Outlet, type RouteObject } from 'react-router-dom';
 
-import { sdk } from '@/core';
+import type { SDKInstance } from '@/types';
 
 type MicroAppsMap = Map<string, RegistrableApp<ObjectType>>;
 
@@ -19,9 +19,9 @@ export const dynamicIcon = (icon: string) => {
  * 处理路由数据
  * @param routes 路由数据
  */
-export const handleRoutesUtil = (routes: any[]) => {
+export const handleRoutesUtil = (routes: any[], sdk: SDKInstance) => {
   const microAppsMap: MicroAppsMap = new Map();
-  const menuData = transformRoutesUtil(routes, microAppsMap);
+  const menuData = transformRoutesUtil(routes, microAppsMap, sdk);
   const microApps = [...microAppsMap.values()];
   return { microApps, menuData };
 };
@@ -30,11 +30,13 @@ export const handleRoutesUtil = (routes: any[]) => {
  * 递归转换路由数据
  * @param routes 路由数据
  * @param microApps 微应用列表
+ * @param sdk SDK实例
  */
 export const transformRoutesUtil = (
   routes: any[],
   microAppsMap: MicroAppsMap,
-) => {
+  sdk: SDKInstance,
+): any[] => {
   if (!routes || routes?.length === 0) return [];
 
   return routes.map((item) => {
@@ -66,20 +68,20 @@ export const transformRoutesUtil = (
       // 添加微应用信息
       microAppsMap.set(name, microAppInfo);
 
-      element = sdk.ui.renderComponent('Microapp', { name, rootId }); // 微应用挂载组件
+      element = sdk.components.renderComponent('Microapp', { name, rootId }); // 微应用挂载组件
     } else if (component === 'Microapp') {
-      element = sdk.ui.renderComponent('Microapp'); // 微应用挂载组件
+      element = sdk.components.renderComponent('Microapp'); // 微应用挂载组件
     } else if (component === 'Outlet') {
       element = <Outlet />; // 路由出口组件
     } else {
-      element = sdk.ui.renderComponent(component); // 普通组件
+      element = sdk.components.renderComponent(component); // 普通组件
     }
 
     return {
       ...item,
       key: `${path}_${icon}_${locale}`, // 唯一key, 判断菜单是否折叠
       element,
-      children: transformRoutesUtil(children, microAppsMap), // 转换子路由
+      children: transformRoutesUtil(children, microAppsMap, sdk), // 转换子路由
       // 用户面包屑 https://reactrouter.com/6.30.2/hooks/use-matches
       handle: item,
     };
@@ -95,7 +97,7 @@ export const getFirstPagePathUtil = (routes: RouteObject[]) => {
 
   if (!routes || routes.length === 0) return firstPagePath;
 
-  firstPagePath = routes?.[0]?.path;
+  firstPagePath = routes?.[0].path!;
 
   if (routes?.[0]?.children && routes?.[0]?.children.length > 0) {
     firstPagePath = getFirstPagePathUtil(routes?.[0]?.children);

@@ -17,27 +17,6 @@
   flex-direction: column;
 }
 
-.sdk-login-form-group {
-  display: flex;
-  align-items: flex-start;
-  margin-bottom: 24px;
-}
-
-.sdk-login-form-group > label {
-  width: 70px;
-}
-
-.sdk-login-form-group-input {
-  flex: 1;
-}
-
-.sdk-login-form-group-input > input {
-  width: 230px;
-  padding: 4px 11px;
-  box-sizing: border-box;
-  font-size: 16px;
-}
-
 .sdk-login-form-btn {
   padding: 4px 11px;
 }

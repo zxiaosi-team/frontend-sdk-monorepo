@@ -1,7 +1,6 @@
 import type { StateCreator } from 'zustand';
 
-import { sdk } from '@/core';
-import type { ThemeProps } from '@/types';
+import type { SDKInstance, ThemeProps } from '@/types';
 
 interface ThemeStoreProps {
   /** 主题 */
@@ -11,20 +10,22 @@ interface ThemeStoreProps {
 }
 
 /**  创建主题切片 */
-const createThemeSlice: StateCreator<ThemeStoreProps> = (set, get) => ({
-  theme: null,
+const createThemeSlice =
+  (sdk: SDKInstance): StateCreator<ThemeStoreProps> =>
+  (set, get) => ({
+    theme: '',
 
-  setTheme: (theme) => {
-    set(() => ({ theme })); // 自动合并其他
+    setTheme: (theme) => {
+      set(() => ({ theme })); // 自动合并其他
 
-    // 记录值
-    sdk.config.theme = theme;
-    sdk.storage.setTheme(theme);
+      // 记录值
+      sdk.config.theme = theme;
+      sdk.storage.setItem(sdk.storage.themeKey, theme);
 
-    // 设置作用域
-    document.documentElement.setAttribute('theme', theme);
-  },
-});
+      // 设置作用域
+      document.documentElement.setAttribute('theme', theme);
+    },
+  });
 
 export { createThemeSlice };
 export type { ThemeStoreProps };

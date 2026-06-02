@@ -1,10 +1,10 @@
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
 
-import { sdk } from '@/core';
+import type { SDKInstance } from '@/types';
 
 /** 用户信息 */
-const useUserInfo = () => {
+const useUserInfo = ({ sdk }: { sdk: SDKInstance }) => {
   const [userInfo, setUserInfo, resetUserInfo] = useStore(
     sdk.store,
     useShallow((state) => [

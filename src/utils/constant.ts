@@ -1,6 +1,6 @@
 import type { FrameworkLifeCycles, ObjectType } from 'qiankun';
 
-import type { LocaleProps, SdkResult, ThemeProps } from '@/types';
+import type { LocaleProps, SDKInstance, ThemeProps } from '@/types';
 
 /** qiankun 生命周期 钩子函数 */
 export const lifeCyclesUtil: FrameworkLifeCycles<ObjectType> = {
@@ -25,11 +25,11 @@ export const lifeCyclesUtil: FrameworkLifeCycles<ObjectType> = {
  * 获取主题默认值
  * @param sdk sdk
  */
-export const getDefaultThemeUtil = (sdk: SdkResult): ThemeProps => {
+export const getDefaultThemeUtil = (sdk: SDKInstance): ThemeProps => {
   // localStorage > sdk中主题 > 系统主题 > 默认
 
   // 1. localStorage
-  const localTheme = sdk.storage.getTheme() as ThemeProps;
+  const localTheme = sdk.storage.getItem(sdk.storage.themeKey) as ThemeProps;
   if (localTheme) return localTheme;
 
   // 2. sdk中主题
@@ -48,11 +48,11 @@ export const getDefaultThemeUtil = (sdk: SdkResult): ThemeProps => {
  * 获取国际化默认值
  * @param sdk sdk
  */
-export const getDefaultLocaleUtil = (sdk: SdkResult): LocaleProps => {
+export const getDefaultLocaleUtil = (sdk: SDKInstance): LocaleProps => {
   // localStorage > sdk中国际化 > 浏览器语言 > 默认
 
   // 1. localStorage
-  const localLocale = sdk.storage.getLocale() as LocaleProps;
+  const localLocale = sdk.storage.getItem(sdk.storage.localeKey) as LocaleProps;
   if (localLocale) return localLocale;
 
   // 2. sdk中国际化

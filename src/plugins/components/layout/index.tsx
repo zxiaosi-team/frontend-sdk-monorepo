@@ -1,7 +1,7 @@
 import { Suspense, useEffect } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 
-import { sdk } from '@/core';
+import type { SDKInstance } from '@/types';
 
 import './index.css';
 
@@ -48,7 +48,7 @@ const Menu: React.FC<{ items: any[] }> = ({ items = [] }) => {
 };
 
 /** 布局组件 */
-const Layout: React.FC = () => {
+const Layout: React.FC<{ sdk: SDKInstance }> = ({ sdk }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -59,13 +59,18 @@ const Layout: React.FC = () => {
 
   /** 退出登录 */
   const handleLogoutClick = () => {
-    sdk.app.pageToLogin();
+    // 1. 移除 token
+    sdk.storage.removeItem(sdk.storage.tokenKey);
+
+    // 2. 跳转到登录页
+    const path = sdk.app.generatedRedirectPath();
+    navigate(path, { replace: true });
   };
 
   useEffect(() => {
     // 是否有用户信息
     if (!sdk.app.user || Object.keys(sdk.app.user).length === 0)
-      return sdk.app.pageToLogin();
+      return handleLogoutClick();
 
     navigate(location.pathname);
   }, [location.pathname]);
@@ -84,7 +89,9 @@ const Layout: React.FC = () => {
 
         <div className='sdk-layout-outlet'>
           <Suspense
-            fallback={sdk.ui.renderComponent('Loading', { isSuspense: true })}
+            fallback={sdk.components.renderComponent('Loading', {
+              isSuspense: true,
+            })}
           >
             <Outlet />
           </Suspense>

@@ -10,7 +10,7 @@ import {
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
 
-import { sdk } from '@/core';
+import type { SDKInstance } from '@/types';
 import {
   getDefaultThemeUtil,
   getDefaultLocaleUtil,
@@ -20,7 +20,7 @@ import {
 } from '@/utils';
 
 /** 记录路由信息 */
-const WithClient: React.FC<any> = ({ children }) => {
+const WithClient: React.FC<any> = ({ sdk, children }) => {
   const location = useLocation();
   const matches = useMatches();
   const navigate = useNavigate();
@@ -33,21 +33,22 @@ const WithClient: React.FC<any> = ({ children }) => {
 };
 
 /** 初始化数据 */
-const useInitData = () => {
+const useInitData = ({ sdk }: { sdk: SDKInstance }) => {
   const loginPath = sdk.config.loginPath; // 登录路径
-  const customRoutes = sdk.config.customRoutes; // 自定义路由
   const isRouterQiankunMode = sdk.config.qiankunMode === 'router'; // 是否使用 qiankun router 模式
 
-  const Layout = sdk.ui.renderComponent('Layout'); // 布局组件
-  const Login = sdk.ui.renderComponent('Login'); // 登录组件
-  const NotFound = sdk.ui.renderComponent('NotFound'); // 404组件
+  const Layout = sdk.components.renderComponent('Layout'); // 布局组件
+  const Login = sdk.components.renderComponent('Login'); // 登录组件
+  const NotFound = sdk.components.renderComponent('NotFound'); // 404组件
 
   /** 默认路由(最外层路由都要被 WithClient 包裹, 可以实现不刷新页面跳转) */
   const defaultRoutes: RouteObject[] = [
     { path: loginPath, element: Login },
     { path: '*', element: NotFound },
-    ...customRoutes,
-  ].map((_) => ({ ..._, element: <WithClient>{_.element}</WithClient> }));
+  ].map((_) => ({
+    ..._,
+    element: <WithClient sdk={sdk}>{_.element}</WithClient>,
+  }));
 
   const [loading, setLoading] = useState(false); // 加载状态(获取初始化数据时)
   const [routes, setRoutes] = useState<RouteObject[]>(defaultRoutes); // 路由
@@ -78,7 +79,10 @@ const useInitData = () => {
       setThemeLocale(theme, locale);
 
       // 处理路由数据
-      const { microApps = [], menuData = [] } = handleRoutesUtil(routerData);
+      const { microApps = [], menuData = [] } = handleRoutesUtil(
+        routerData,
+        sdk,
+      );
 
       // 使用 qiankun router 模式
       if (isRouterQiankunMode) {
@@ -119,12 +123,10 @@ const useInitData = () => {
   };
 
   useEffect(() => {
-    sdk.app.initData = initData;
     sdk.app.allRoutes = defaultRoutes;
 
-    const paths = sdk.config.customRoutes?.map((item) => item.path);
     const pathName = window.location.pathname;
-    const noNeedAuth = [loginPath, ...paths]?.includes(pathName);
+    const noNeedAuth = [loginPath]?.includes(pathName);
 
     // 如果时登录页面
     if (noNeedAuth) setThemeLocale();

@@ -1,92 +1,57 @@
-import { merge } from 'es-toolkit/object';
+import type { SDKInstance, SDKModulesOptions, SDKPluginOptions } from '@/types';
 
-import type { LocaleProps, Plugin, ThemeProps } from '@/types';
-
-interface StorageOptions {
+interface StorageModule {
   /** 语言存储名称 */
-  localeKey?: string;
+  localeKey: string;
   /** 主题存储名称  */
-  themeKey?: string;
+  themeKey: string;
   /** Token存储名称 */
-  tokenKey?: string;
+  tokenKey: string;
+
+  /** 设置缓存 */
+  setItem(key: string, value: string): void;
+  /** 获取缓存 */
+  getItem(key: string): string | null;
+  /** 删除缓存 */
+  removeItem(key: string): void;
+  /** 清空缓存 */
+  clear(): void;
 }
 
-interface StorageResults extends Required<StorageOptions> {
-  /** 获取当前语言 */
-  getLocale(): LocaleProps;
-  /** 设置/切换语言 */
-  setLocale(locale: LocaleProps): void;
-  /** 清空语言 */
-  clearLocale(): void;
+/** 默认配置 */
+const defaultOptions: StorageModule = {
+  localeKey: 'locale',
+  themeKey: 'theme',
+  tokenKey: 'token',
 
-  /** 获取当前主题 */
-  getTheme(): ThemeProps;
-  /** 设置/切换主题 */
-  setTheme(theme: ThemeProps): void;
-  /** 清空主题 */
-  clearTheme(): void;
-
-  /** 获取当前 Token */
-  getToken(): string;
-  /** 设置 Token */
-  setToken(token: string): void;
-  /** 清空 Token */
-  clearToken(): void;
-}
-
-/** 插件名称 */
-const pluginName = 'storage';
-
-/**
- * 本地缓存
- * - 详情参考 {@link StorageOptions} {@link StorageResults}
- * - 配置 localStorage 变量名称
- * - 提供 语言、主题、Token 的 get、change、clear 方法
- * @example sdk.storage.getToken() // 获取 Token
- * @example sdk.storage.setTheme('dark') // 设置主题
- * @example sdk.storage.clearLocale() // 清空语言
- */
-const SdkStoragePlugin: Plugin<'storage'> = {
-  name: pluginName,
-  install(sdk, options = {}) {
-    // 默认插件配置
-    const defaultOptions = {
-      localeKey: 'locale',
-      themeKey: 'theme',
-      tokenKey: 'token',
-
-      getLocale: () => {
-        return localStorage.getItem(sdk.storage.localeKey);
-      },
-      setLocale: (locale: string) => {
-        localStorage.setItem(sdk.storage.localeKey, locale);
-      },
-      clearLocale: () => {
-        localStorage.removeItem(sdk.storage.localeKey);
-      },
-      getTheme: () => {
-        return localStorage.getItem(sdk.storage.themeKey);
-      },
-      setTheme: (theme: string) => {
-        localStorage.setItem(sdk.storage.themeKey, theme);
-      },
-      clearTheme: () => {
-        localStorage.removeItem(sdk.storage.themeKey);
-      },
-      getToken: () => {
-        return localStorage.getItem(sdk.storage.tokenKey);
-      },
-      setToken: (token: string) => {
-        localStorage.setItem(sdk.storage.tokenKey, token);
-      },
-      clearToken: () => {
-        localStorage.removeItem(sdk.storage.tokenKey);
-      },
-    } satisfies StorageResults;
-
-    sdk[pluginName] = merge(defaultOptions, options);
+  setItem(key: string, value: string) {
+    localStorage.setItem(key, value);
+  },
+  getItem(key: string) {
+    return localStorage.getItem(key);
+  },
+  removeItem(key: string) {
+    localStorage.removeItem(key);
+  },
+  clear() {
+    localStorage.clear();
   },
 };
 
-export { SdkStoragePlugin };
-export type { StorageOptions, StorageResults };
+/** 本地缓存插件 */
+function SDKStroagePlugin(options?: SDKPluginOptions) {
+  return (sdk: SDKInstance) => {
+    let realOptions: SDKModulesOptions = {};
+
+    if (typeof options === 'function') {
+      realOptions = options(sdk);
+    } else if (typeof options === 'object') {
+      realOptions = options;
+    }
+
+    return { storage: { ...defaultOptions, ...realOptions } };
+  };
+}
+
+export { SDKStroagePlugin };
+export type { StorageModule };
