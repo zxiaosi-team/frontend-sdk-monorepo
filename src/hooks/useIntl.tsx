@@ -2,7 +2,7 @@ import { cloneDeep } from 'es-toolkit/object';
 import { useMemo } from 'react';
 import { useStore } from 'zustand';
 
-import type { SDKInstance } from '@/types';
+import { sdk } from '@/core';
 
 /**
  * React Intl Universal
@@ -10,7 +10,7 @@ import type { SDKInstance } from '@/types';
  * - 不要解构使用, const { get } = useIntl() 会报错
  * @example const intl = useIntl(); intl.get(key).d(defaultValue)
  */
-const useIntl = ({ sdk }: { sdk: SDKInstance }) => {
+const useIntl = () => {
   const locale = useStore(sdk.store, (state) => state.locale);
   const intl = useMemo(() => cloneDeep(sdk.i18n?.intl), [locale]);
   return intl;

@@ -1,6 +1,7 @@
 import type { StateCreator } from 'zustand';
 
-import type { SDKInstance, UserInfo } from '@/types';
+import { sdk } from '@/core';
+import type { UserInfo } from '@/types';
 
 const defaultUserInfoState: UserInfo = {
   user: {},
@@ -18,18 +19,16 @@ interface UserInfoStoreProps {
 }
 
 /** 创建用户信息切片 */
-const createUserInfoSlice =
-  (sdk: SDKInstance): StateCreator<UserInfoStoreProps> =>
-  (set, get) => ({
-    userInfo: defaultUserInfoState,
-    setUserInfo: (userInfo) => {
-      set(() => ({ userInfo }));
-      sdk.app = { ...sdk.app, ...userInfo };
-    },
-    resetUserInfo: () => {
-      set(() => ({ userInfo: defaultUserInfoState }));
-    },
-  });
+const createUserInfoSlice: StateCreator<UserInfoStoreProps> = (set, get) => ({
+  userInfo: defaultUserInfoState,
+  setUserInfo: (userInfo) => {
+    set(() => ({ userInfo }));
+    sdk.app = { ...sdk.app, ...userInfo };
+  },
+  resetUserInfo: () => {
+    set(() => ({ userInfo: defaultUserInfoState }));
+  },
+});
 
 export { createUserInfoSlice };
 export type { UserInfoStoreProps };

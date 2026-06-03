@@ -1,6 +1,7 @@
+import { merge } from 'es-toolkit/object';
 import { createElement, type ComponentType, type ReactElement } from 'react';
 
-import type { SDKInstance, SDKModulesOptions, SDKPluginOptions } from '@/types';
+import type { SDKPlugin } from '@/types';
 
 import Layout from './layout';
 import Loading from './loading';
@@ -11,7 +12,7 @@ import NotFound from './notFound';
 
 import './index.css';
 
-interface ComponentsModule {
+interface ComponentsOptions {
   /** 组件 */
   [key: string]: any;
 
@@ -33,64 +34,64 @@ interface ComponentsModule {
   renderComponent(name: string, props?: any): ReactElement | null;
 }
 
-/** 默认配置 */
-const defaultOptions = (sdk: SDKInstance): Partial<ComponentsModule> => ({
-  Layout,
-  Loading,
-  Login,
-  Microapp,
-  NotFound,
-  NoPermission,
-
-  setComponent: (component, name) => {
-    if (!component) {
-      console.error('SDKComponentsPlugin - Component cannot be empty');
-      return;
-    }
-
-    const componentName = name || component.displayName || component.name;
-    if (!componentName) {
-      console.error('SDKComponentsPlugin - Component name cannot be empty');
-      return;
-    }
-
-    sdk.components[componentName] = component;
-  },
-  getComponent: (name) => {
-    if (!name) {
-      console.error('SDKComponentsPlugin - Component name cannot be empty');
-      return null;
-    } else {
-      return sdk.components[name] as ComponentType;
-    }
-  },
-  renderComponent: (name, props = {}) => {
-    const Component = sdk.components.getComponent(name);
-    if (!Component) {
-      console.error(`SDKComponentsPlugin - Component ${name} not found`);
-      return null;
-    } else {
-      return createElement(Component, { ...props, sdk });
-    }
-  },
-});
+/** 插件名称 */
+const pluginName = 'components';
 
 /**
  * 组件插件
+ *
+ * @example
+ * sdk.use(SDKComponentsPlugin).mount('xxx');
+ * sdk.components.setComponent(组件, '组件名称');
+ * sdk.components.renderComponent('组件名称', props);
  */
-function SDKComponentsPlugin(options?: SDKPluginOptions) {
-  return (sdk: SDKInstance) => {
-    let realOptions: SDKModulesOptions = {};
+const SDKComponentsPlugin: SDKPlugin = {
+  name: pluginName,
+  install(sdk, options = {}) {
+    const defaultOptions = {
+      Layout,
+      Loading,
+      Login,
+      Microapp,
+      NotFound,
+      NoPermission,
 
-    if (typeof options === 'function') {
-      realOptions = options(sdk);
-    } else if (typeof options === 'object') {
-      realOptions = options;
-    }
+      setComponent: (component, name) => {
+        if (!component) {
+          console.error('SDKComponentsPlugin - Component cannot be empty');
+          return;
+        }
 
-    return { api: { ...defaultOptions(sdk), ...realOptions } };
-  };
-}
+        const componentName = name || component.displayName || component.name;
+        if (!componentName) {
+          console.error('SDKComponentsPlugin - Component name cannot be empty');
+          return;
+        }
+
+        sdk.components[componentName] = component;
+      },
+      getComponent: (name) => {
+        if (!name) {
+          console.error('SDKComponentsPlugin - Component name cannot be empty');
+          return null;
+        } else {
+          return sdk.components[name] as ComponentType;
+        }
+      },
+      renderComponent: (name, props = {}) => {
+        const Component = sdk.components.getComponent(name);
+        if (!Component) {
+          console.error(`SDKComponentsPlugin - Component ${name} not found`);
+          return null;
+        } else {
+          return createElement(Component, props);
+        }
+      },
+    } satisfies ComponentsOptions;
+
+    sdk[pluginName] = merge(defaultOptions, options);
+  },
+};
 
 export { SDKComponentsPlugin };
-export type { ComponentsModule };
+export type { ComponentsOptions };

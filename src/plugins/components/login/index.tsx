@@ -1,11 +1,10 @@
 import { useState } from 'react';
 
-import type { SDKInstance } from '@/types';
-
 import './index.css';
+import { sdk } from '@/core';
 
 /** 登录组件 */
-const Login: React.FC<{ sdk: SDKInstance }> = ({ sdk }) => {
+const Login: React.FC = () => {
   const [loading, setLoading] = useState(false);
 
   /** 表单提交成功事件 */

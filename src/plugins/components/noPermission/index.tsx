@@ -1,7 +1,5 @@
-import type { SDKInstance } from '@/types';
-
 /** 无权限组件 */
-const NoPermission: React.FC<{ sdk: SDKInstance }> = ({ sdk }) => {
+const NoPermission: React.FC = () => {
   return <div>无权限</div>;
 };
 

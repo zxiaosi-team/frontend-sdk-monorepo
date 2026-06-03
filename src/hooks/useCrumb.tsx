@@ -1,13 +1,13 @@
 import { useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import type { SDKInstance } from '@/types';
+import { sdk } from '@/core';
 
 /**
  * 获取面包屑
  * @see https://reactrouter.com/6.30.3/hooks/use-matches
  */
-const useCrumb = ({ sdk }: { sdk: SDKInstance }) => {
+const useCrumb = () => {
   const location = useLocation();
 
   let matches = useMemo(() => sdk.router.matches, [location]);

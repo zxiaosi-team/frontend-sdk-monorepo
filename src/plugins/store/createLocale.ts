@@ -1,6 +1,7 @@
 import type { StateCreator } from 'zustand';
 
-import type { LocaleProps, SDKInstance } from '@/types';
+import { sdk } from '@/core';
+import type { LocaleProps } from '@/types';
 
 interface LocaleStoreProps {
   /** 语言 */
@@ -10,22 +11,20 @@ interface LocaleStoreProps {
 }
 
 /** 创建语言切片 */
-const createLocaleSlice =
-  (sdk: SDKInstance): StateCreator<LocaleStoreProps> =>
-  (set, get) => ({
-    locale: '',
+const createLocaleSlice: StateCreator<LocaleStoreProps> = (set, get) => ({
+  locale: '',
 
-    setLocale: (locale) => {
-      set(() => ({ locale })); // 自动合并其他
+  setLocale: (locale) => {
+    set(() => ({ locale })); // 自动合并其他
 
-      // 记录值
-      sdk.config.locale = locale;
-      sdk.storage.setItem(sdk.storage.localeKey, locale);
+    // 记录值
+    sdk.config.locale = locale;
+    sdk.storage.setItem(sdk.storage.localeKey, locale);
 
-      // 设置作用域
-      document.documentElement.setAttribute('lang', locale);
-    },
-  });
+    // 设置作用域
+    document.documentElement.setAttribute('lang', locale);
+  },
+});
 
 export { createLocaleSlice };
 export type { LocaleStoreProps };

@@ -5,17 +5,24 @@ class SDKCore {
   /** 名称 */
   name?: string;
 
-  /** 插件 Map */
-  _plugins: Map<string, SDKPlugin<any>> = new Map();
+  /** 插件列表 */
+  _plugins: Map<string, any> = new Map();
 
-  /** 挂载 */
+  /**
+   * 将实例挂载到 Window 对象上
+   * @param name - 要挂载的属性名
+   */
   mount(name: string) {
     this.name = name; // 设置名称
 
     window[name] = this; // 挂载到 Window 上
   }
 
-  /** 继承 */
+  /**
+   * 继承实例, 从 Window 对象上获取指定名称的实例并合并属性
+   * @param name - 要从 Window 对象上获取的实例名称
+   * @throws 当指定的 SDK 实例不存在时抛出错误
+   */
   extend(name: string) {
     const target = window[name]; // 从 Window 上获取实例
 
@@ -24,21 +31,30 @@ class SDKCore {
     Object.assign(this, target); // 合并实例属性
   }
 
-  /** 使用插件 */
-  use<T extends Record<string, any>>(plugin: SDKPlugin<T, this>): this & T {
-    const result = plugin(this); // 执行插件函数
+  /**
+   * 使用插件
+   * @param plugin - 插件对象 {@link SDKPlugin}
+   * @param options - 插件选项
+   */
+  use(plugin: SDKPlugin, options: SDKPlugin['options'] = {}) {
+    const { name, install } = plugin;
 
-    this._plugins.set(plugin.name, plugin); // 存储插件
+    if (!name) throw new Error(`SDK - The plugin requires a name`);
 
-    Object.assign(this, result); // 合并插件返回的属性
+    if (typeof install !== 'function')
+      throw new Error(
+        `SDK - The plugin "${name}" requires an install function`,
+      );
 
-    return this as any; // 返回合并后的 SDK 实例
+    install(this as any, options); // 执行插件函数
+
+    this._plugins.set(name, { ...plugin, options }); // 添加到插件列表
+
+    return this; // 链式调用
   }
 }
 
 /** 创建 SDK 实例 */
-function createSdk() {
-  return new SDKCore() as SDKInstance; // 创建并返回 SDK 实例
-}
+const sdk = new SDKCore() as SDKInstance; // 创建并返回 SDK 实例
 
-export { SDKCore, createSdk };
+export { SDKCore, sdk };

@@ -9,45 +9,46 @@ import {
 import { createThemeSlice, type ThemeStoreProps } from './createTheme';
 import { createUserInfoSlice, type UserInfoStoreProps } from './createUserInfo';
 
-type StoreOptions = LocaleStoreProps &
+type AllStoreProps = LocaleStoreProps &
   MicroAppLoadingStoreProps &
   ThemeStoreProps &
   UserInfoStoreProps;
 
-import type { SDKInstance, SDKModulesOptions, SDKPluginOptions } from '@/types';
+import type { SDKPlugin } from '@/types';
 
 /**
  * 创建 Store
  * - 这里单独声明变量, 主要是为了使用返回类型 StoreResults 🤔
  */
-const globalStore = (sdk: SDKInstance) =>
-  createStore<StoreOptions>()(
-    subscribeWithSelector((...a) => ({
-      ...createLocaleSlice(sdk)(...a),
-      ...createMicroAppLoadingSlice(sdk)(...a),
-      ...createThemeSlice(sdk)(...a),
-      ...createUserInfoSlice(sdk)(...a),
-    })),
-  );
+const globalStore = createStore<AllStoreProps>()(
+  subscribeWithSelector((...a) => ({
+    ...createLocaleSlice(...a),
+    ...createMicroAppLoadingSlice(...a),
+    ...createThemeSlice(...a),
+    ...createUserInfoSlice(...a),
+  })),
+);
 
-type StoreModule = ReturnType<typeof globalStore>;
+type StoreOptions = typeof globalStore;
+
+/** 插件名称 */
+const pluginName = 'store';
 
 /**
  * 状态管理插件
+ * - 此插件不会合并传入属性
+ * @example const setTheme = useStore(sdk.store, (state) => state.setTheme)
+ * @example const { theme, setTheme } = useStore(sdk.store, useShallow((state) => { theme: state.theme, setTheme: state.setTheme }))
+ * @example const [theme, setTheme] = useStore(sdk.store, useShallow((state) => [state.theme, state.setTheme]))
+ * @example sdk.store?.getState()?.setTheme('light')
+ * @example sdk.store.subscribe((state) => state.theme, (theme) => { console.log('theme', theme) }, { fireImmediately: true }) // fireImmediately 立即变更
  */
-function SDKStorePlugin(options?: SDKPluginOptions) {
-  return (sdk: SDKInstance) => {
-    let realOptions: SDKModulesOptions = {};
-
-    if (typeof options === 'function') {
-      realOptions = options(sdk);
-    } else if (typeof options === 'object') {
-      realOptions = options;
-    }
-
-    return { store: { ...globalStore(sdk), ...realOptions } };
-  };
-}
+const SDKStorePlugin: SDKPlugin = {
+  name: pluginName,
+  install(sdk, options = {}) {
+    sdk[pluginName] = globalStore satisfies StoreOptions;
+  },
+};
 
 export { SDKStorePlugin };
-export type { StoreModule };
+export type { StoreOptions };

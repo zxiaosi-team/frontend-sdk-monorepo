@@ -14,3 +14,5 @@ export { useIntl } from '@/hooks/useIntl';
 export { useCrumb } from '@/hooks/useCrumb';
 export { usePermission } from '@/hooks/usePermission';
 export { useInitData } from '@/hooks/useInitData';
+
+export * from '@/types';

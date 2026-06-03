@@ -1,58 +1,55 @@
-import type { SDKInstance, SDKModulesOptions, SDKPluginOptions } from '@/types';
+import { merge } from 'es-toolkit/object';
 
-interface ApiModule {
-  /** 请求方法（默认使用 fetch） */
-  request<T>(url: string, options: RequestInit): Promise<T>;
+import type { SDKPlugin } from '@/types';
+
+interface ApiOptions {
+  /** 默认请求方法 */
+  fetch(url: string, options: RequestInit): Promise<any>;
 }
 
-/** 默认配置 */
-const defaultOptions: Partial<ApiModule> = {
-  async request(url: string, options: RequestInit = {}) {
-    const { method, headers, ...rest } = options;
-
-    try {
-      const resp = await fetch(url, {
-        ...rest,
-        method,
-        headers: { 'Content-Type': 'application/json', ...headers },
-      });
-
-      return await resp.json();
-    } catch (error) {
-      console.error('SDK - Request failed:', url, error);
-      return Promise.reject(error);
-    }
-  },
-};
+/** 插件名称 */
+const pluginName = 'api';
 
 /**
  * 请求插件
  *
  * @example
- * const sdk = createSdk().use(SDKApiPlugin());
- * await sdk.api.request('/api/data', { method: 'GET' });
+ * sdk.use(SDKApiPlugin).mount('xxx');
+ * await sdk.api.fetch('/api/data', { method: 'GET' });
  *
  * @example
- * const sdk = createSdk().use(SDKApiPlugin((sdk) => ({
- *   get: async (url, options) => {
- *      return sdk.api.request(url, { method: 'GET', ...options });
+ * sdk.use(SDKApiPlugin, {
+ *  get: async (url, options) => {
+ *     return sdk.api.fetch(url, { method: 'GET', ...options });
  *   }
- * })));
+ * });
  * await sdk.api.get('/api/data');
  */
-function SDKApiPlugin(options?: SDKPluginOptions) {
-  return (sdk: SDKInstance) => {
-    let realOptions: SDKModulesOptions = {};
+const SDKApiPlugin: SDKPlugin = {
+  name: pluginName,
+  install(sdk, options = {}) {
+    const defaultOptions = {
+      fetch: async (url: string, options: RequestInit = {}) => {
+        const { method, headers, ...rest } = options;
 
-    if (typeof options === 'function') {
-      realOptions = options(sdk);
-    } else if (typeof options === 'object') {
-      realOptions = options;
-    }
+        try {
+          const resp = await fetch(url, {
+            ...rest,
+            method,
+            headers: { 'Content-Type': 'application/json', ...headers },
+          });
 
-    return { api: { ...defaultOptions, ...realOptions } };
-  };
-}
+          return await resp.json();
+        } catch (error) {
+          console.error('SDK - Request failed:', url, error);
+          return Promise.reject(error);
+        }
+      },
+    } satisfies ApiOptions;
+
+    sdk[pluginName] = merge(defaultOptions, options);
+  },
+};
 
 export { SDKApiPlugin };
-export type { ApiModule };
+export type { ApiOptions };

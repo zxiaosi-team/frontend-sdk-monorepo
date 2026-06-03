@@ -1,26 +1,26 @@
-import type { SDKInstance, SDKModulesOptions, SDKPluginOptions } from '@/types';
+import { merge } from 'es-toolkit/object';
 
-interface I18nModule {}
+import type { SDKPlugin } from '@/types';
 
-/** 默认配置 */
-const defaultOptions: Partial<I18nModule> = {};
+interface I18nOptions {}
+
+/** 插件名称 */
+const pluginName = 'i18n';
 
 /**
  * 国际化插件
+ *
+ * @example
+ * sdk.use(SDKI18nPlugin).mount('xxx');
  */
-function SDKI18nPlugin(options?: SDKPluginOptions) {
-  return (sdk: SDKInstance) => {
-    let realOptions: SDKModulesOptions = {};
+const SDKI18nPlugin: SDKPlugin = {
+  name: pluginName,
+  install(sdk, options: {}) {
+    const defaultOptions = {} satisfies I18nOptions;
 
-    if (typeof options === 'function') {
-      realOptions = options(sdk);
-    } else if (typeof options === 'object') {
-      realOptions = options;
-    }
-
-    return { i18n: { ...defaultOptions, ...realOptions } };
-  };
-}
+    sdk[pluginName] = merge(defaultOptions, options);
+  },
+};
 
 export { SDKI18nPlugin };
-export type { I18nModule };
+export type { I18nOptions };

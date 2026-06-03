@@ -1,6 +1,8 @@
-import type { SDKInstance, SDKModulesOptions, SDKPluginOptions } from '@/types';
+import { merge } from 'es-toolkit/object';
 
-interface StorageModule {
+import type { SDKPlugin } from '@/types';
+
+interface StorageOptions {
   /** 语言存储名称 */
   localeKey: string;
   /** 主题存储名称  */
@@ -18,40 +20,40 @@ interface StorageModule {
   clear(): void;
 }
 
-/** 默认配置 */
-const defaultOptions: StorageModule = {
-  localeKey: 'locale',
-  themeKey: 'theme',
-  tokenKey: 'token',
+/** 插件名称 */
+const pluginName = 'storage';
 
-  setItem(key: string, value: string) {
-    localStorage.setItem(key, value);
-  },
-  getItem(key: string) {
-    return localStorage.getItem(key);
-  },
-  removeItem(key: string) {
-    localStorage.removeItem(key);
-  },
-  clear() {
-    localStorage.clear();
+/**
+ * 本地缓存插件
+ *
+ * @example
+ * sdk.use(SDKStoragePlugin).mount('xxx');
+ */
+const SDKStoragePlugin: SDKPlugin = {
+  name: pluginName,
+  install(sdk, options: {}) {
+    const defaultOptions = {
+      localeKey: 'locale',
+      themeKey: 'theme',
+      tokenKey: 'token',
+
+      setItem(key: string, value: string) {
+        localStorage.setItem(key, value);
+      },
+      getItem(key: string) {
+        return localStorage.getItem(key);
+      },
+      removeItem(key: string) {
+        localStorage.removeItem(key);
+      },
+      clear() {
+        localStorage.clear();
+      },
+    } satisfies StorageOptions;
+
+    sdk[pluginName] = merge(defaultOptions, options);
   },
 };
 
-/** 本地缓存插件 */
-function SDKStoragePlugin(options?: SDKPluginOptions) {
-  return (sdk: SDKInstance) => {
-    let realOptions: SDKModulesOptions = {};
-
-    if (typeof options === 'function') {
-      realOptions = options(sdk);
-    } else if (typeof options === 'object') {
-      realOptions = options;
-    }
-
-    return { storage: { ...defaultOptions, ...realOptions } };
-  };
-}
-
 export { SDKStoragePlugin };
-export type { StorageModule };
+export type { StorageOptions };

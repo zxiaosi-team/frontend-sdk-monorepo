@@ -1,7 +1,7 @@
 import { Suspense, useEffect } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 
-import type { SDKInstance } from '@/types';
+import { sdk } from '@/core';
 
 import './index.css';
 
@@ -48,7 +48,7 @@ const Menu: React.FC<{ items: any[] }> = ({ items = [] }) => {
 };
 
 /** 布局组件 */
-const Layout: React.FC<{ sdk: SDKInstance }> = ({ sdk }) => {
+const Layout: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -59,12 +59,7 @@ const Layout: React.FC<{ sdk: SDKInstance }> = ({ sdk }) => {
 
   /** 退出登录 */
   const handleLogoutClick = () => {
-    // 1. 移除 token
-    sdk.storage.removeItem(sdk.storage.tokenKey);
-
-    // 2. 跳转到登录页
-    const path = sdk.app.generatedRedirectPath();
-    navigate(path, { replace: true });
+    sdk.app.pageToLogin();
   };
 
   useEffect(() => {

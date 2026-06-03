@@ -1,12 +1,12 @@
 import type { SDKCore } from '@/core';
-import type { ApiModule } from '@/plugins/api';
-import type { AppModule } from '@/plugins/app';
-import type { ComponentsModule } from '@/plugins/components';
-import type { ConfigModule } from '@/plugins/config';
-import type { I18nModule } from '@/plugins/i18n';
-import type { RouterModule } from '@/plugins/router';
-import type { StorageModule } from '@/plugins/storage';
-import type { StoreModule } from '@/plugins/store';
+import type { ApiOptions } from '@/plugins/api';
+import type { AppOptions } from '@/plugins/app';
+import type { ComponentsOptions } from '@/plugins/components';
+import type { ConfigOptions } from '@/plugins/config';
+import type { I18nOptions } from '@/plugins/i18n';
+import type { RouterOptions } from '@/plugins/router';
+import type { StorageOptions } from '@/plugins/storage';
+import type { StoreOptions } from '@/plugins/store';
 
 export type ThemeProps = 'light' | 'dark' | (string & {});
 
@@ -27,31 +27,34 @@ declare global {
   }
 }
 
-export interface SDKModules {
+export interface SDKPlugins {
   /** 请求 */
-  api: ApiModule;
+  api: ApiOptions;
   /** 应用 */
-  app: AppModule;
+  app: AppOptions;
   /** 组件 */
-  components: ComponentsModule;
+  components: ComponentsOptions;
   /** 配置 */
-  config: ConfigModule;
+  config: ConfigOptions;
   /** 国际化 */
-  i18n: I18nModule;
+  i18n: I18nOptions;
   /** 路由 */
-  router: RouterModule;
+  router: RouterOptions;
   /** 本地缓存 */
-  storage: StorageModule;
+  storage: StorageOptions;
   /** 状态管理 */
-  store: StoreModule;
+  store: StoreOptions;
 }
 
-export type SDKPlugin<T extends Record<string, any>, S = any> = (sdk: S) => T;
+export interface SDKPlugin {
+  /** 插件名称 */
+  name: string;
+  /** 插件安装方法 */
+  install(sdk: SDKInstance, options?: Record<string, any>): void;
+  /** 插件配置项 */
+  options?: Record<string, any>;
+}
 
-export type SDKModulesOptions = Record<string, (...args: any[]) => any>;
+export type SDKPluginOptions = Record<string, any | ((...args: any[]) => any)>;
 
-export type SDKPluginOptions =
-  | SDKModulesOptions
-  | ((sdk: SDKInstance) => SDKModulesOptions);
-
-export type SDKInstance = SDKCore & SDKModules;
+export type SDKInstance = SDKCore & SDKPlugins;

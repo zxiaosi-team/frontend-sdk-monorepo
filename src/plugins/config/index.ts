@@ -1,12 +1,8 @@
-import type {
-  LocaleProps,
-  SDKInstance,
-  SDKModulesOptions,
-  SDKPluginOptions,
-  ThemeProps,
-} from '@/types';
+import { merge } from 'es-toolkit/object';
 
-interface ConfigModule {
+import type { LocaleProps, SDKPlugin, ThemeProps } from '@/types';
+
+interface ConfigOptions {
   /** 环境变量(主应用共享给微应用变量) */
   env: Record<string, any>;
 
@@ -30,42 +26,36 @@ interface ConfigModule {
   qiankunMode: 'router' | 'load';
 }
 
-/** 默认配置 */
-const defaultOptions: Partial<ConfigModule> = {
-  env: {},
-
-  theme: '',
-  locale: '',
-
-  loginPath: '/login',
-  defaultPath: '',
-  redirectField: 'redirect',
-
-  qiankunMode: 'load',
-};
+/** 插件名称 */
+const pluginName = 'config';
 
 /**
  * 配置插件
  *
  * @example
- * const sdk = createSdk().use(SDKConfigPlugin({
- *   theme: 'light',
- * }));
+ * sdk.use(SDKConfigPlugin, { theme: 'light' }).mount('xxx');
  * console.log(sdk.api.theme); // 'light'
  */
-function SDKConfigPlugin(options?: SDKPluginOptions) {
-  return (sdk: SDKInstance) => {
-    let realOptions: SDKModulesOptions = {};
+const SDKConfigPlugin: SDKPlugin = {
+  name: pluginName,
+  install(sdk, options: {}) {
+    // 默认插件配置
+    const defaultOptions = {
+      env: {},
 
-    if (typeof options === 'function') {
-      realOptions = options(sdk);
-    } else if (typeof options === 'object') {
-      realOptions = options;
-    }
+      theme: '',
+      locale: '',
 
-    return { config: { ...defaultOptions, ...realOptions } };
-  };
-}
+      loginPath: '/login',
+      defaultPath: '',
+      redirectField: 'redirect',
+
+      qiankunMode: 'load',
+    } satisfies ConfigOptions;
+
+    sdk[pluginName] = merge(defaultOptions, options);
+  },
+};
 
 export { SDKConfigPlugin };
-export type { ConfigModule };
+export type { ConfigOptions };

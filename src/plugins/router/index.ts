@@ -1,8 +1,9 @@
+import { merge } from 'es-toolkit/object';
 import type { NavigateFunction, UIMatch } from 'react-router-dom';
 
-import type { SDKInstance, SDKModulesOptions, SDKPluginOptions } from '@/types';
+import type { SDKPlugin } from '@/types';
 
-interface RouterModule {
+interface RouterOptions {
   /** 主应用 location */
   location: Location;
   /** 路由匹配（用于面包屑） */
@@ -11,27 +12,30 @@ interface RouterModule {
   navigate: NavigateFunction;
 }
 
-/** 默认配置 */
-const defaultOptions = {
-  location: null,
-  navigate: null,
-  matches: null,
+/** 插件名称 */
+const pluginName = 'router';
+
+/**
+ * 路由插件
+ *
+ * @example
+ * sdk.use(SDKI18nPlugin).mount('xxx');
+ * sdk.router.location; // 路由信息
+ * sdk.router.navigate; // 路由跳转
+ * sdk.router.matches; // 面包屑信息
+ */
+const SDKRouterPlugin: SDKPlugin = {
+  name: pluginName,
+  install(sdk, options: {}) {
+    const defaultOptions = {
+      location: null,
+      navigate: null,
+      matches: null,
+    };
+
+    sdk[pluginName] = merge(defaultOptions, options);
+  },
 };
 
-/** 路由插件 */
-function SDKRouterPlugin(options?: SDKPluginOptions) {
-  return (sdk: SDKInstance) => {
-    let realOptions: SDKModulesOptions = {};
-
-    if (typeof options === 'function') {
-      realOptions = options(sdk);
-    } else if (typeof options === 'object') {
-      realOptions = options;
-    }
-
-    return { router: { ...defaultOptions, ...realOptions } };
-  };
-}
-
 export { SDKRouterPlugin };
-export type { RouterModule };
+export type { RouterOptions };
