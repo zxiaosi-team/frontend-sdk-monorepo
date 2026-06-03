@@ -37,7 +37,7 @@ const Menu: React.FC<{ items: any[] }> = ({ items = [] }) => {
           }}
           onClick={() => (isAllowClick ? navigate(path) : {})}
         >
-          {sdk.i18n.intl?.get?.(locale) || name}
+          {name}
         </div>
         <ul className='sdk-layout-menu-sub'>
           <Menu items={children} />
