@@ -12,36 +12,24 @@ const Login: React.FC = () => {
     if (loading) return;
     e.preventDefault();
 
-    try {
-      setLoading(() => true);
-      const resp = new Promise((resolve) => {
-        setTimeout(() => {
-          resolve({ data: { token: '123456' } });
-        }, 1000);
-      }) as any;
-      setLoading(() => false);
+    setLoading(() => true);
+    // 睡眠1s
+    await new Promise((resolve) => setTimeout(() => resolve(true), 500));
+    setLoading(() => false);
+    sdk.storage.setItem(sdk.storage.tokenKey, '123456');
 
-      const token = resp?.data?.token || '';
-      if (!token) return;
-
-      sdk.storage.setItem(sdk.storage.tokenKey, token);
-
-      const defaultPath = sdk.app.getRedirectPath();
-      sdk.router.navigate(defaultPath, { replace: true });
-    } catch (e) {
-      console.log('Sdk: Login - handleFinish: ', e);
-      setLoading(() => false);
-    }
+    const defaultPath = sdk.app.getRedirectPath();
+    sdk.router.navigate(defaultPath, { replace: true });
+    await sdk.app.initData?.();
   };
 
   return (
     <div className='sdk-login'>
       <h2>登录页</h2>
-      <form className='sdk-login-form'>
-        <button className='sdk-login-form-btn' onClick={handleFinish}>
-          {loading ? '登录中...' : '登录'}
-        </button>
-      </form>
+
+      <button className='sdk-login-btn' onClick={handleFinish}>
+        {loading ? '登录中...' : '登录'}
+      </button>
     </div>
   );
 };

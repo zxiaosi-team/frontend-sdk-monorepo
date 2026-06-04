@@ -9,6 +9,4 @@ export * from '@/plugins/router';
 export * from '@/plugins/storage';
 export * from '@/plugins/store';
 
-export { useInitData } from '@/hooks/useInitData';
-
 export * from '@/types';

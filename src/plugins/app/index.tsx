@@ -45,6 +45,10 @@ interface AppOptions {
    */
   getRedirectPath(): string;
   /**
+   * 初始化数据
+   */
+  initData(): void | Promise<void>;
+  /**
    * 跳转登录页
    * - 1. 清除 Token
    * - 2. 获取当前页路由
@@ -132,6 +136,7 @@ const SDKAppPlugin: SDKPlugin = {
         // 3. 最后使用菜单中第一项
         return '/';
       },
+      initData: () => {},
       pageToLogin() {
         // 1. 清除 Token
         sdk.storage.removeItem(sdk.storage.tokenKey);

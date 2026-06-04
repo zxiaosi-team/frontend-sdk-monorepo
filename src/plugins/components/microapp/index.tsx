@@ -1,10 +1,13 @@
-import { loadMicroApp } from 'qiankun';
+import {
+  loadMicroApp,
+  type FrameworkLifeCycles,
+  type ObjectType,
+} from 'qiankun';
 import React, { memo, useEffect } from 'react';
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
 
 import { sdk } from '@/core';
-import { lifeCyclesUtil } from '@/utils';
 
 interface Props {
   /** 微应用名称 */
@@ -12,6 +15,24 @@ interface Props {
   /** 微应用挂载节点 */
   rootId: string;
 }
+
+const lifeCyclesUtil: FrameworkLifeCycles<ObjectType> = {
+  beforeLoad: [
+    async (app) => {
+      console.log('[LifeCycle] before load %c%s', 'color: green;', app.name);
+    },
+  ],
+  beforeMount: [
+    async (app) => {
+      console.log('[LifeCycle] before mount %c%s', 'color: green;', app.name);
+    },
+  ],
+  afterUnmount: [
+    async (app) => {
+      console.log('[LifeCycle] after unmount %c%s', 'color: green;', app.name);
+    },
+  ],
+};
 
 /** 微应用挂载组件 */
 const Microapp: React.FC<Props> = ({ name, rootId }) => {

@@ -4,19 +4,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
   color: var(--sdk-text-color);
   background: var(--sdk-bg-color);
 }
 
-.sdk-login-form {
-  width: 300px;
-  padding: 23px;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-  display: flex;
-  flex-direction: column;
-}
-
-.sdk-login-form-btn {
-  padding: 4px 11px;
+.sdk-login-btn {
+  width: 200px;
+  padding: 6px 11px;
 }
