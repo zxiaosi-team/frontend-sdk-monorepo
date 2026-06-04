@@ -9,9 +9,6 @@ export * from '@/plugins/router';
 export * from '@/plugins/storage';
 export * from '@/plugins/store';
 
-export { useUserInfo } from '@/hooks/useUserInfo';
-export { useCrumb } from '@/hooks/useCrumb';
-export { usePermission } from '@/hooks/usePermission';
 export { useInitData } from '@/hooks/useInitData';
 
 export * from '@/types';

@@ -5,10 +5,7 @@ import type { SDKPlugin } from '@/types';
 
 import Layout from './layout';
 import Loading from './loading';
-import Login from './login';
 import Microapp from './microapp';
-import NoPermission from './noPermission';
-import NotFound from './notFound';
 
 import './index.css';
 
@@ -51,10 +48,7 @@ const SDKComponentsPlugin: SDKPlugin = {
     const defaultOptions = {
       Layout,
       Loading,
-      Login,
       Microapp,
-      NotFound,
-      NoPermission,
 
       setComponent: (component, name) => {
         if (!component) {
