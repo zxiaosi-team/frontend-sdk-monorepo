@@ -11,12 +11,7 @@ import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
 
 import { sdk } from '@/core';
-import {
-  getDefaultThemeUtil,
-  getDefaultLocaleUtil,
-  handleRoutesUtil,
-  getFirstPagePathUtil,
-} from '@/utils';
+import { handleRoutesUtil, getFirstPagePathUtil } from '@/utils';
 
 /** 记录路由信息 */
 const WithRouter: React.FC<any> = ({ children }) => {
@@ -56,8 +51,8 @@ const useInitData = () => {
 
   /** 设置主题和国际化 */
   const setThemeLocale = (apiTheme?: any, apiLocale?: any) => {
-    setTheme(apiTheme || getDefaultThemeUtil(sdk));
-    setLocale(apiLocale || getDefaultLocaleUtil(sdk));
+    setTheme(apiTheme || sdk.app.getDefaultTheme());
+    setLocale(apiLocale || sdk.app.getDefaultLocale());
   };
   /** 获取初始化数据 */
   const initData = async () => {

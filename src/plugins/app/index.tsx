@@ -1,7 +1,7 @@
 import { merge } from 'es-toolkit/object';
 import type { MicroApp, ObjectType, RegistrableApp } from 'qiankun';
 
-import type { SDKPlugin, UserInfo } from '@/types';
+import type { LocaleProps, SDKPlugin, ThemeProps, UserInfo } from '@/types';
 
 interface AppOptions {
   /** 菜单数据 */
@@ -22,11 +22,32 @@ interface AppOptions {
   settings: UserInfo['settings'];
 
   /**
+   * 获取国际化默认值
+   * - 1. 本地缓存 `sdk.storage.getItem(sdk.storage.localeKey)`
+   * - 2. sdk中国际化 `sdk.config.locale`
+   * - 3. 浏览器语言 `navigator.language`
+   * - 4. 默认 `zh-CN`
+   */
+  getDefaultLocale(): LocaleProps;
+  /**
+   * 获取主题默认值
+   * - 1. 本地缓存 `sdk.storage.getItem(sdk.storage.themeKey)`
+   * - 2. sdk中主题 `sdk.config.theme`
+   * - 3. 系统主题 `window.matchMedia('(prefers-color-scheme: dark)').matches`
+   * - 4. 默认 `light`
+   */
+  getDefaultTheme(): ThemeProps;
+  /**
    * 获取重定向路径
+   * - 1. 优先使用指定值 `sdk.config.defaultPath`
+   * - 2. 其次使用重定向的值 `sdk.config.redirectField`
+   * - 3. 最后使用菜单中第一项 `/`
    */
   getRedirectPath(): string;
   /**
    * 跳转登录页
+   * - 1. 清除 Token
+   * - 2. 获取当前页路由
    */
   pageToLogin(): void;
   /**
@@ -61,6 +82,42 @@ const SDKAppPlugin: SDKPlugin = {
       permissions: [],
       settings: {},
 
+      getDefaultLocale() {
+        // 1. localStorage
+        const localLocale = sdk.storage.getItem(
+          sdk.storage.localeKey,
+        ) as LocaleProps;
+        if (localLocale) return localLocale;
+
+        // 2. sdk中国际化
+        const sdkLocale = sdk.config?.locale;
+        if (sdkLocale) return sdkLocale;
+
+        // 3. 浏览器语言
+        const browserLocale = navigator.language as LocaleProps;
+        if (browserLocale) return browserLocale;
+
+        // 4. 默认
+        return 'zh-CN';
+      },
+      getDefaultTheme() {
+        // 1. localStorage
+        const localTheme = sdk.storage.getItem(
+          sdk.storage.themeKey,
+        ) as ThemeProps;
+        if (localTheme) return localTheme;
+
+        // 2. sdk中主题
+        const sdkTheme = sdk.config?.theme;
+        if (sdkTheme) return sdkTheme;
+
+        // 3. 系统主题
+        const media = window.matchMedia('(prefers-color-scheme: dark)');
+        if (media.matches) return media.matches ? 'dark' : 'light';
+
+        // 4. 默认
+        return 'light';
+      },
       getRedirectPath() {
         // 1. 优先使用指定值
         const defaultPath = sdk.config.defaultPath;
