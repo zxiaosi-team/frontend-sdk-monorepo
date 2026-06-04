@@ -1,5 +1,3 @@
-import './index.css';
-
 interface Props {
   /** 是否是初始化数据 */
   isInitData?: boolean;
@@ -16,7 +14,21 @@ const Loading: React.FC<Props> = ({
   isMicroApp = false,
 }) => {
   return (
-    <div className={`${isInitData ? 'sdk-loading-init' : ''}`}>Loading...</div>
+    <div
+      style={
+        isInitData
+          ? {
+              width: '100%',
+              height: '100%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }
+          : {}
+      }
+    >
+      Loading...
+    </div>
   );
 };
 

@@ -8,8 +8,6 @@ import Loading from './loading';
 import Login from './login';
 import Microapp from './microapp';
 
-import './index.css';
-
 interface ComponentsOptions {
   /** 组件 */
   [key: string]: any;

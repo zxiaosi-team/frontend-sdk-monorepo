@@ -1,48 +1,155 @@
-import { Suspense, useEffect } from 'react';
+import { Suspense, useEffect, type CSSProperties } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 
 import { sdk } from '@/core';
 
-import './index.css';
+const styles: Record<string, CSSProperties> = {
+  layout: {
+    height: '100vh',
+    display: 'flex',
+    flexDirection: 'column',
+    background: '#f5f7fb',
+  },
+
+  header: {
+    height: 64,
+    padding: '0 24px',
+    background: '#fff',
+    borderBottom: '1px solid #e5e7eb',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
+    zIndex: 10,
+  },
+
+  logo: {
+    fontSize: 20,
+    fontWeight: 700,
+    color: '#1677ff',
+    cursor: 'pointer',
+    userSelect: 'none',
+  },
+
+  logoutBtn: {
+    height: 36,
+    padding: '0 16px',
+    border: 'none',
+    borderRadius: 8,
+    background: '#ff4d4f',
+    color: '#fff',
+    cursor: 'pointer',
+    transition: '0.2s',
+  },
+
+  main: {
+    flex: 1,
+    display: 'flex',
+    overflow: 'hidden',
+  },
+
+  sidebar: {
+    width: 240,
+    padding: 16,
+    background: '#fff',
+    borderRight: '1px solid #e5e7eb',
+    overflowY: 'auto',
+  },
+
+  content: {
+    flex: 1,
+    padding: 20,
+    overflowY: 'auto',
+  },
+
+  contentCard: {
+    minHeight: '100%',
+    padding: 24,
+    background: '#fff',
+    borderRadius: 16,
+    boxShadow: '0 2px 12px rgba(0,0,0,0.04)',
+  },
+
+  menuItem: {
+    marginBottom: 4,
+  },
+
+  menuTitle: {
+    height: 42,
+    padding: '0 14px',
+    display: 'flex',
+    alignItems: 'center',
+    borderRadius: 10,
+    color: '#1f2937',
+    cursor: 'pointer',
+    transition: '0.2s',
+  },
+
+  menuChildren: {
+    marginLeft: 12,
+    paddingLeft: 12,
+    borderLeft: '1px solid #e5e7eb',
+  },
+};
 
 /** 菜单组件 */
 const Menu: React.FC<{ items: any[] }> = ({ items = [] }) => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  if (!items || items.length === 0) return null;
+  if (!items?.length) return null;
 
   return items.map((item) => {
-    const { key, name, path, locale, children, hideInMenu = false } = item;
+    const { key, name, path, children, hideInMenu = false } = item;
 
-    let isAllowClick = true;
-    if (
-      children &&
-      children.length > 0 &&
-      children.filter((_) => !_.hideInMenu).length > 0
-    ) {
-      isAllowClick = false;
-    }
+    if (hideInMenu) return null;
+
+    const hasChildren =
+      children && children.filter((_: any) => !_.hideInMenu).length > 0;
+
+    const active = location.pathname === path;
+
+    /** 鼠标移入事件 */
+    const handleMouseEnter = (e) => {
+      if (active) return;
+      e.currentTarget.style.background = '#f3f4f6';
+    };
+
+    /** 鼠标移出事件 */
+    const handleMouseLeave = (e) => {
+      if (active) return;
+      e.currentTarget.style.background = 'transparent';
+    };
+
+    /** 点击事件 */
+    const handleClick = () => {
+      if (hasChildren) return;
+      navigate(path);
+    };
 
     return (
-      <li key={key} className='sdk-layout-menu-item'>
+      <div key={key} style={styles.menuItem}>
         <div
-          className='sdk-layout-menu-item-title'
           style={{
-            ...(location.pathname === path
-              ? { background: '#e6f4ff', color: '#1677ff' }
-              : {}),
-            ...(hideInMenu ? { display: 'none' } : {}),
-            cursor: isAllowClick ? 'pointer' : 'not-allowed',
+            ...styles.menuTitle,
+
+            ...(active ? { background: '#e8f3ff', color: '#1677ff' } : {}),
+
+            ...(hasChildren ? { cursor: 'not-allowed' } : {}),
           }}
-          onClick={() => (isAllowClick ? navigate(path) : {})}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+          onClick={handleClick}
         >
           {name}
         </div>
-        <ul className='sdk-layout-menu-sub'>
-          <Menu items={children} />
-        </ul>
-      </li>
+
+        {hasChildren && (
+          <div style={styles.menuChildren}>
+            <Menu items={children} />
+          </div>
+        )}
+      </div>
     );
   });
 };
@@ -62,6 +169,16 @@ const Layout: React.FC = () => {
     sdk.app.pageToLogin();
   };
 
+  /** 鼠标移入事件 */
+  const handleMouseEnter = (e) => {
+    e.currentTarget.style.opacity = '0.75';
+  };
+
+  /** 鼠标移出事件 */
+  const handleMouseLeave = (e) => {
+    e.currentTarget.style.opacity = '1';
+  };
+
   useEffect(() => {
     // 是否有用户信息
     if (!sdk.app.user || Object.keys(sdk.app.user).length === 0)
@@ -71,26 +188,38 @@ const Layout: React.FC = () => {
   }, [location.pathname]);
 
   return (
-    <div className='sdk-layout'>
-      <div className='sdk-layout-header'>
-        <div onClick={handleHeaderClick}>Logo</div>
-        <button onClick={handleLogoutClick}>退出登录</button>
-      </div>
-
-      <div className='sdk-layout-content'>
-        <ul className='sdk-layout-menu'>
-          <Menu items={sdk.app.menuData || []} />
-        </ul>
-
-        <div className='sdk-layout-outlet'>
-          <Suspense
-            fallback={sdk.components.renderComponent('Loading', {
-              isSuspense: true,
-            })}
-          >
-            <Outlet />
-          </Suspense>
+    <div style={styles.layout}>
+      <header style={styles.header}>
+        <div style={styles.logo} onClick={handleHeaderClick}>
+          Logo
         </div>
+
+        <button
+          style={styles.logoutBtn}
+          onClick={handleLogoutClick}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+        >
+          退出登录
+        </button>
+      </header>
+
+      <div style={styles.main}>
+        <aside style={styles.sidebar}>
+          <Menu items={sdk.app.menuData || []} />
+        </aside>
+
+        <main style={styles.content}>
+          <div style={styles.contentCard}>
+            <Suspense
+              fallback={sdk.components.renderComponent('Loading', {
+                isSuspense: true,
+              })}
+            >
+              <Outlet />
+            </Suspense>
+          </div>
+        </main>
       </div>
     </div>
   );
