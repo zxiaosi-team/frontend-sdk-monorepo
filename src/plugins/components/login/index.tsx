@@ -13,7 +13,14 @@ const styles: Record<string, CSSProperties> = {
   },
 
   btn: {
-    padding: '6px 60px',
+    height: 36,
+    padding: '0 60px',
+    border: 'none',
+    borderRadius: 8,
+    background: '#1677ff',
+    color: '#fff',
+    cursor: 'pointer',
+    transition: '0.2s',
   },
 };
 
@@ -35,11 +42,26 @@ const Login: React.FC = () => {
     await sdk.app.initData?.();
   };
 
+  /** 鼠标移入事件 */
+  const handleMouseEnter = (e) => {
+    e.currentTarget.style.opacity = '0.75';
+  };
+
+  /** 鼠标移出事件 */
+  const handleMouseLeave = (e) => {
+    e.currentTarget.style.opacity = '1';
+  };
+
   return (
     <div style={styles.page}>
       <h2>欢迎登录系统</h2>
 
-      <button style={styles.btn} onClick={handleLogin}>
+      <button
+        style={styles.btn}
+        onClick={handleLogin}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+      >
         {loading ? '登录中...' : '登录'}
       </button>
     </div>
