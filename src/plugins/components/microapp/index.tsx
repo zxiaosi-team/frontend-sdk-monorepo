@@ -21,7 +21,7 @@ const Microapp: React.FC<Props> = ({ name, rootId }) => {
   );
 
   useEffect(() => {
-    if (!name || sdk.config.qiankunMode !== 'load') return;
+    if (!name) return;
 
     let instance = sdk.app.microAppsInstance.get(name);
     if (instance) {

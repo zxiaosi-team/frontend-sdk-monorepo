@@ -17,13 +17,6 @@ interface ConfigOptions {
   defaultPath: string;
   /** 重定向字段 */
   redirectField?: string;
-
-  /**
-   * Qiankun 加载模式 - 仅支持 `load` 模式
-   * - `router`: 基于路由模式
-   * - `load`: 手动加载模式
-   */
-  qiankunMode: 'router' | 'load';
 }
 
 /** 插件名称 */
@@ -49,8 +42,6 @@ const SDKConfigPlugin: SDKPlugin = {
       loginPath: '/login',
       defaultPath: '',
       redirectField: 'redirect',
-
-      qiankunMode: 'load',
     } satisfies ConfigOptions;
 
     sdk[pluginName] = merge(defaultOptions, options);
