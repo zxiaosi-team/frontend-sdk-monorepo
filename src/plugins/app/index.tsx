@@ -51,7 +51,9 @@ interface AppOptions {
   /**
    * 跳转登录页
    * - 1. 清除 Token
-   * - 2. 获取当前页路由
+   * - 2. 清除用户信息
+   * - 3. 获取当前页路由
+   * - 4. 清空微应用
    */
   pageToLogin(): void;
   /**
@@ -141,7 +143,12 @@ const SDKAppPlugin: SDKPlugin = {
         // 1. 清除 Token
         sdk.storage.removeItem(sdk.storage.tokenKey);
 
-        // 2. 获取当前页路由
+        // 2. 清除用户信息
+        sdk.app.user = null;
+        sdk.app.permissions = [];
+        sdk.app.settings = {};
+
+        // 3. 获取当前页路由
         const path = location.pathname;
         const loginPath = sdk.config.loginPath;
         const redirectField = sdk.config.redirectField || 'redirect';
@@ -152,6 +159,9 @@ const SDKAppPlugin: SDKPlugin = {
             : `${loginPath}?${redirectField}=${redirect}`;
 
         sdk.router.navigate(allPath, { replace: true });
+
+        // 4. 清空微应用
+        sdk.app.unmountMicroApp();
       },
       unmountMicroApp(names) {
         if (!names) {
