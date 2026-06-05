@@ -1,5 +1,7 @@
-import { createStore } from 'zustand';
+import { createStore, type StateCreator } from 'zustand';
 import { subscribeWithSelector } from 'zustand/middleware';
+
+import type { SDKPlugin } from '@/types';
 
 import { createLocaleSlice, type LocaleStoreProps } from './createLocale';
 import {
@@ -9,34 +11,48 @@ import {
 import { createThemeSlice, type ThemeStoreProps } from './createTheme';
 import { createUserInfoSlice, type UserInfoStoreProps } from './createUserInfo';
 
-type AllStoreProps = LocaleStoreProps &
-  MicroAppLoadingStoreProps &
-  ThemeStoreProps &
-  UserInfoStoreProps;
+interface StoreProps
+  extends
+    LocaleStoreProps,
+    MicroAppLoadingStoreProps,
+    ThemeStoreProps,
+    UserInfoStoreProps {}
 
-import type { SDKPlugin } from '@/types';
+type StoreSlice<T = any> = StateCreator<T>;
+
+/** 插件 options */
+type StorePluginOptions = Record<string, StoreSlice>;
 
 /**
  * 创建 Store
- * - 这里单独声明变量, 主要是为了使用返回类型 StoreResults 🤔
+ * - 这里单独声明变量, 主要是为了使用返回类型 StoreOptions 🤔
  */
-const globalStore = createStore<AllStoreProps>()(
-  subscribeWithSelector((...a) => ({
-    ...createLocaleSlice(...a),
-    ...createMicroAppLoadingSlice(...a),
-    ...createThemeSlice(...a),
-    ...createUserInfoSlice(...a),
-  })),
-);
+const createGlobalStore = (options?: StorePluginOptions) =>
+  createStore<StoreProps>()(
+    subscribeWithSelector((...a) => ({
+      ...createLocaleSlice(...a),
+      ...createMicroAppLoadingSlice(...a),
+      ...createThemeSlice(...a),
+      ...createUserInfoSlice(...a),
 
-type StoreOptions = typeof globalStore;
+      /** 合并外部 slice */
+      ...Object.values(options || {}).reduce(
+        (acc, createSlice) => ({
+          ...acc,
+          ...createSlice(...a),
+        }),
+        {},
+      ),
+    })),
+  );
+
+type StoreOptions = ReturnType<typeof createGlobalStore>;
 
 /** 插件名称 */
 const pluginName = 'store';
 
 /**
  * 状态管理插件
- * - 此插件不会合并传入属性
  * @example const setTheme = useStore(sdk.store, (state) => state.setTheme)
  * @example const { theme, setTheme } = useStore(sdk.store, useShallow((state) => { theme: state.theme, setTheme: state.setTheme }))
  * @example const [theme, setTheme] = useStore(sdk.store, useShallow((state) => [state.theme, state.setTheme]))
@@ -46,9 +62,9 @@ const pluginName = 'store';
 const SDKStorePlugin: SDKPlugin = {
   name: pluginName,
   install(sdk, options = {}) {
-    sdk[pluginName] = globalStore satisfies StoreOptions;
+    sdk[pluginName] = createGlobalStore(options);
   },
 };
 
 export { SDKStorePlugin };
-export type { StoreOptions };
+export type { StoreOptions, StoreProps, StoreSlice };
