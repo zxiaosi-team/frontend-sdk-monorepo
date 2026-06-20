@@ -13,7 +13,7 @@ const pluginName = 'i18n';
  * @example
  * sdk.use(SDKI18nPlugin).mount('xxx');
  */
-const SDKI18nPlugin: SDKPlugin = {
+const SDKI18nPlugin: SDKPlugin<'i18n'> = {
   name: pluginName,
   install(sdk, options: {}) {
     const defaultOptions = {} satisfies I18nOptions;

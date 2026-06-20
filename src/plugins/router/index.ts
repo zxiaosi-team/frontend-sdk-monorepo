@@ -24,7 +24,7 @@ const pluginName = 'router';
  * sdk.router.navigate; // 路由跳转
  * sdk.router.matches; // 面包屑信息
  */
-const SDKRouterPlugin: SDKPlugin = {
+const SDKRouterPlugin: SDKPlugin<'router'> = {
   name: pluginName,
   install(sdk, options: {}) {
     const defaultOptions = {

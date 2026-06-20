@@ -29,7 +29,7 @@ const pluginName = 'storage';
  * @example
  * sdk.use(SDKStoragePlugin).mount('xxx');
  */
-const SDKStoragePlugin: SDKPlugin = {
+const SDKStoragePlugin: SDKPlugin<'storage'> = {
   name: pluginName,
   install(sdk, options: {}) {
     const defaultOptions = {

@@ -8,7 +8,7 @@ const pluginName = 'api';
 /**
  * 请求插件
  */
-const SDKApiPlugin: SDKPlugin = {
+const SDKApiPlugin: SDKPlugin<'api'> = {
   name: pluginName,
   install(sdk, options = {}) {
     sdk[pluginName] = options;

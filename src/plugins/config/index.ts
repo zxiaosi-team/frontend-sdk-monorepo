@@ -5,11 +5,12 @@ import type {
   SDKPlugin,
   ThemeProps,
   MicroAppLifeCycles,
+  ObjectType,
 } from '@/types';
 
 interface ConfigOptions {
   /** 环境变量(主应用共享给微应用变量) */
-  env: Record<string, any>;
+  env: ObjectType;
 
   /** 主题 */
   theme: ThemeProps;
@@ -37,7 +38,7 @@ const pluginName = 'config';
  * sdk.use(SDKConfigPlugin, { theme: 'light' }).mount('xxx');
  * console.log(sdk.api.theme); // 'light'
  */
-const SDKConfigPlugin: SDKPlugin = {
+const SDKConfigPlugin: SDKPlugin<'config'> = {
   name: pluginName,
   install(sdk, options: {}) {
     // 默认插件配置

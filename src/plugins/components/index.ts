@@ -41,7 +41,7 @@ const pluginName = 'components';
  * sdk.components.setComponent(组件, '组件名称');
  * sdk.components.renderComponent('组件名称', props);
  */
-const SDKComponentsPlugin: SDKPlugin = {
+const SDKComponentsPlugin: SDKPlugin<'components'> = {
   name: pluginName,
   install(sdk, options = {}) {
     const defaultOptions = {

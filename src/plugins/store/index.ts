@@ -59,7 +59,7 @@ const pluginName = 'store';
  * @example sdk.store?.getState()?.setTheme('light')
  * @example sdk.store.subscribe((state) => state.theme, (theme) => { console.log('theme', theme) }, { fireImmediately: true }) // fireImmediately 立即变更
  */
-const SDKStorePlugin: SDKPlugin = {
+const SDKStorePlugin: SDKPlugin<'store'> = {
   name: pluginName,
   install(sdk, options = {}) {
     sdk[pluginName] = createGlobalStore(options);

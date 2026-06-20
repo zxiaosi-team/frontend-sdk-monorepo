@@ -86,7 +86,7 @@ const pluginName = 'app';
  * sdk.use(SDKAppPlugin, { menus: [...] }).mount('xxx');
  * sdk.app.unmountMicroApp();
  */
-const SDKAppPlugin: SDKPlugin = {
+const SDKAppPlugin: SDKPlugin<'app'> = {
   name: pluginName,
   install(sdk, options = {}) {
     const defaultOptions = {

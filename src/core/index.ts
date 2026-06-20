@@ -1,4 +1,4 @@
-import type { SDKInstance, SDKPlugin } from '@/types';
+import type { SDKInstance, SDKPlugin, SDKPlugins } from '@/types';
 
 /** SDK 类 */
 class SDKCore {
@@ -36,7 +36,10 @@ class SDKCore {
    * @param plugin - 插件对象 {@link SDKPlugin}
    * @param options - 插件选项
    */
-  use(plugin: SDKPlugin, options: SDKPlugin['options'] = {}) {
+  use<K extends keyof SDKPlugins>(
+    plugin: SDKPlugin<K>,
+    options: SDKPlugin<K>['options'] = {},
+  ) {
     const { name, install } = plugin;
 
     if (!name) throw new Error(`SDK - The plugin requires a name`);
