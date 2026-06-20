@@ -1,6 +1,11 @@
 import { merge } from 'es-toolkit/object';
 
-import type { LocaleProps, SDKPlugin, ThemeProps } from '@/types';
+import type {
+  LocaleProps,
+  SDKPlugin,
+  ThemeProps,
+  MicroAppLifeCycles,
+} from '@/types';
 
 interface ConfigOptions {
   /** 环境变量(主应用共享给微应用变量) */
@@ -16,7 +21,10 @@ interface ConfigOptions {
   /** 登录后跳转的路由 */
   defaultPath: string;
   /** 重定向字段 */
-  redirectField?: string;
+  redirectField: string;
+
+  /** 微应用生命周期 */
+  lifeCycles: MicroAppLifeCycles;
 }
 
 /** 插件名称 */
@@ -42,6 +50,13 @@ const SDKConfigPlugin: SDKPlugin = {
       loginPath: '/login',
       defaultPath: '',
       redirectField: 'redirect',
+
+      lifeCycles: {
+        beforeLoad: (app) => console.log('[LifeCycle] before load', app.name),
+        beforeMount: (app) => console.log('[LifeCycle] before mount', app.name),
+        afterUnmount: (app) =>
+          console.log('[LifeCycle] after unmount', app.name),
+      },
     } satisfies ConfigOptions;
 
     sdk[pluginName] = merge(defaultOptions, options);

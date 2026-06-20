@@ -1,25 +1,41 @@
 import { merge } from 'es-toolkit/object';
-import type { MicroApp, ObjectType, RegistrableApp } from 'qiankun';
 
-import type { LocaleProps, SDKPlugin, ThemeProps, UserInfo } from '@/types';
+import type {
+  LoadMicroAppConfiguration,
+  LoadableApp,
+  MicroAppInstance,
+  MicroAppLifeCycles,
+  LocaleProps,
+  SDKPlugin,
+  ThemeProps,
+  UserInfo,
+} from '@/types';
 
 interface AppOptions {
-  /** 菜单数据 */
-  menuData: any[];
-  /** 所有路由信息 */
-  allRoutes: any[];
-
-  /** 微应用信息 */
-  microApps: RegistrableApp<ObjectType>[];
-  /** 微应用实例 */
-  microAppsInstance: Map<string, MicroApp>;
-
   /** 用户信息 */
   user: UserInfo['user'];
+  /** 菜单数据 */
+  menus: any[];
   /** 用户权限 */
   permissions: UserInfo['permissions'];
   /** 用户设置 */
   settings: UserInfo['settings'];
+
+  /** 微应用信息 */
+  microApps: any[];
+  /** 微应用实例 */
+  microAppsInstance: Map<string, any>;
+
+  /**
+   * 初始化数据
+   */
+  initData?(): void | Promise<void>;
+  /** 手动加载微应用 */
+  loadMicroApp?(
+    app: LoadableApp,
+    configuration?: LoadMicroAppConfiguration,
+    lifeCycles?: MicroAppLifeCycles,
+  ): MicroAppInstance;
 
   /**
    * 获取国际化默认值
@@ -45,10 +61,6 @@ interface AppOptions {
    */
   getRedirectPath(): string;
   /**
-   * 初始化数据
-   */
-  initData(): void | Promise<void>;
-  /**
    * 跳转登录页
    * - 1. 清除 Token
    * - 2. 清除用户信息
@@ -71,22 +83,23 @@ const pluginName = 'app';
  * 应用插件
  *
  * @example
- * sdk.use(SDKAppPlugin, { menuData: [...] }).mount('xxx');
+ * sdk.use(SDKAppPlugin, { menus: [...] }).mount('xxx');
  * sdk.app.unmountMicroApp();
  */
 const SDKAppPlugin: SDKPlugin = {
   name: pluginName,
   install(sdk, options = {}) {
     const defaultOptions = {
-      menuData: [],
-      allRoutes: [],
+      user: null,
+      menus: [],
+      permissions: [],
+      settings: {},
 
       microApps: [],
       microAppsInstance: new Map(),
 
-      user: null,
-      permissions: [],
-      settings: {},
+      initData: undefined,
+      loadMicroApp: undefined,
 
       getDefaultLocale() {
         // 1. localStorage
@@ -138,7 +151,6 @@ const SDKAppPlugin: SDKPlugin = {
         // 3. 最后使用菜单中第一项
         return '/';
       },
-      initData: () => {},
       pageToLogin() {
         // 1. 清除 Token
         sdk.storage.removeItem(sdk.storage.tokenKey);

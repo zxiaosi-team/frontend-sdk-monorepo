@@ -206,7 +206,7 @@ const Layout: React.FC = () => {
 
       <div style={styles.main}>
         <aside style={styles.sidebar}>
-          <Menu items={sdk.app.menuData || []} />
+          <Menu items={sdk.app.menus || []} />
         </aside>
 
         <main style={styles.content}>
