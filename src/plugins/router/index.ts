@@ -1,5 +1,5 @@
 import { merge } from 'es-toolkit/object';
-import type { NavigateFunction, UIMatch } from 'react-router-dom';
+import type { NavigateFunction, UIMatch, Location } from 'react-router-dom';
 
 import type { SDKPlugin } from '@/types';
 
