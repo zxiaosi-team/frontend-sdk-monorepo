@@ -4,7 +4,8 @@ import { sdk } from '@/core';
 import type { UserInfo } from '@/types';
 
 const defaultUserInfoState: UserInfo = {
-  user: {},
+  user: null,
+  menus: [],
   permissions: [],
   settings: {},
 };
@@ -27,6 +28,7 @@ const createUserInfoSlice: StateCreator<UserInfoStoreProps> = (set, get) => ({
   },
   resetUserInfo: () => {
     set(() => ({ userInfo: defaultUserInfoState }));
+    sdk.app = { ...sdk.app, ...defaultUserInfoState };
   },
 });
 

@@ -17,6 +17,8 @@ export type LocaleProps = 'zh-CN' | 'en-US' | (string & {});
 export interface UserInfo {
   /** 用户信息 */
   user?: any;
+  /** 菜单数据 */
+  menus?: any[];
   /** 用户权限 */
   permissions?: string[];
   /** 用户设置 */

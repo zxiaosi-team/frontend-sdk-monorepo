@@ -27,10 +27,12 @@ interface AppOptions {
   microAppsInstance: Map<string, any>;
 
   /**
-   * 初始化数据
+   * 初始化数据（登录跳转不刷新页面用）
    */
   initData?(): void | Promise<void>;
-  /** 手动加载微应用 */
+  /**
+   * 手动加载微应用（与 Qiankun 一致）
+   */
   loadMicroApp?(
     app: LoadableApp,
     configuration?: LoadMicroAppConfiguration,
@@ -156,9 +158,7 @@ const SDKAppPlugin: SDKPlugin<'app'> = {
         sdk.storage.removeItem(sdk.storage.tokenKey);
 
         // 2. 清除用户信息
-        sdk.app.user = null;
-        sdk.app.permissions = [];
-        sdk.app.settings = {};
+        sdk.store.getState().resetUserInfo();
 
         // 3. 获取当前页路由
         const path = location.pathname;
