@@ -33,12 +33,12 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "@tsdown/css": "^0.22.3",
+    "@tsdown/css": "^0.22.4",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "es-toolkit": "^1.47.1",
-    "tsdown": "^0.22.3",
-    "typescript": "^5.9.3"
+    "tsdown": "^0.22.4",
+    "typescript": "^6.0.3"
   },
   "peerDependencies": {
     "react": "^18.3.1 || >=19.0.0",
