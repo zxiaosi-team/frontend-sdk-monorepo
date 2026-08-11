@@ -1,0 +1,17 @@
+# 当 push create-sdk/v* tag 时运行，如：在本地执行 git push origin create-sdk/v1.0.0
+# 实际逻辑见可复用工作流 publish.yml
+name: Publish And Release (create-sdk)
+
+on:
+  push:
+    tags:
+      - 'create-sdk/v*'
+
+jobs:
+  publish:
+    uses: ./.github/workflows/publish.yml
+    with:
+      package: packages/create-sdk
+    secrets:
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      GHP_TOKEN: ${{ secrets.GHP_TOKEN }}

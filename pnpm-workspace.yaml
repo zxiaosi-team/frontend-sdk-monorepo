@@ -1,0 +1,6 @@
+packages:
+  - 'packages/*'
+  - 'apps/*'
+
+allowBuilds:
+  simple-git-hooks: false
