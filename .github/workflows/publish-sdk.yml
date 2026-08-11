@@ -36,11 +36,11 @@ jobs:
         run: pnpm -C packages/sdk build
 
       # Step6: 发布到 npmjs
-      - name: Publish to npmjs
-        # 带 scope 的包名需要 --access public；tag 检出没有分支需要 --no-git-checks，见 https://github.com/pnpm/pnpm/issues/5894
-        run: pnpm -C packages/sdk publish --access public --no-git-checks
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      # - name: Publish to npmjs
+      #   # 带 scope 的包名需要 --access public；tag 检出没有分支需要 --no-git-checks，见 https://github.com/pnpm/pnpm/issues/5894
+      #   run: pnpm -C packages/sdk publish --access public --no-git-checks
+      #   env:
+      #     NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       # Step7: 将 dist 目录压缩成 release 附件
       - name: Package dist for release
