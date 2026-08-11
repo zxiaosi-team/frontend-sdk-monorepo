@@ -9,6 +9,11 @@ on:
         required: true
         type: string
         description: 要发布到 npmjs 的包目录（相对仓库根目录），如 packages/sdk
+    secrets: # 必须声明
+      NPM_TOKEN:
+        required: true
+      GHP_TOKEN:
+        required: true
 
 jobs:
   build-and-publish:
@@ -28,8 +33,7 @@ jobs:
         with:
           node-version: 24
           registry-url: https://registry.npmjs.org/
-          # disable cache, to avoid cache poisoning (https://docs.zizmor.sh/audits/#cache-poisoning)
-          package-manager-cache: false
+          cache: '' # 禁用缓存（防止缓存投毒）
 
       # Step4: 安装依赖（--frozen-lockfile 保证构建可复现）
       - name: Install dependencies
@@ -58,4 +62,4 @@ jobs:
           name: ${{ github.ref_name }}
           files: ./release.tgz
           body: |
-            Please refer to [CHANGELOG.md](https://github.com/zxiaosi-team/frontend-sdk-monorepo/blob/${{ github.ref_name }}/${{ inputs.package }}/CHANGELOG.md) for details.
+            Please refer to [CHANGELOG.md](https://github.com/zxiaosi-team/${{ github.repository }}/blob/${{ github.ref_name }}/${{ inputs.package }}/CHANGELOG.md) for details.
