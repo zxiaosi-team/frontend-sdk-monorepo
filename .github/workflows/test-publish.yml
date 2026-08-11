@@ -1,0 +1,10 @@
+name: Test sdk trigger
+on:
+  push:
+    tags:
+      - '*'
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "sdk workflow triggered"
