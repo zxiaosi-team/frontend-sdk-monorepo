@@ -5,13 +5,44 @@ name: Publish And Release (create-sdk)
 on:
   push:
     tags:
-      - 'create-sdk/v*'
+      - 'create-sdk/v*' # 最终用这个；测试时可改为 '*'
 
 jobs:
-  publish:
-    uses: ./.github/workflows/publish.yml
-    with:
-      package: packages/create-sdk
-    secrets:
-      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-      GHP_TOKEN: ${{ secrets.GHP_TOKEN }}
+  build-and-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup nodejs
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22 # 推荐 LTS
+          registry-url: https://registry.npmjs.org/
+          cache: ''
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build package
+        run: pnpm -C packages/create-sdk build
+
+      - name: Publish to npmjs
+        run: pnpm -C packages/create-sdk publish --access public --no-git-checks
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Package dist for release
+        run: tar -zcvf release.tgz -C packages/create-sdk ./dist
+
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          token: ${{ secrets.GHP_TOKEN }}
+          name: ${{ github.ref_name }}
+          files: ./release.tgz
+          body: |
+            Please refer to [CHANGELOG.md](https://github.com/${{ github.repository }}/blob/${{ github.ref_name }}/packages/create-sdk/CHANGELOG.md) for details.
