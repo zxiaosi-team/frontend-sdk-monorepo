@@ -8,10 +8,50 @@ on:
       - 'sdk/v*'
 
 jobs:
-  publish:
-    uses: ./.github/workflows/publish.yml
-    with:
-      package: packages/sdk
-    secrets:
-      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-      GHP_TOKEN: ${{ secrets.GHP_TOKEN }}
+  build-and-publish:
+    runs-on: ubuntu-latest
+    steps:
+      # Step1: 检出源码
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      # Step2: 安装 pnpm 环境
+      - name: Install pnpm
+        uses: pnpm/action-setup@v6
+
+      # Step3: 安装 Nodejs 环境并指定 npm 镜像仓库
+      - name: Setup nodejs
+        uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org/
+          cache: '' # 禁用缓存（防止缓存投毒）
+
+      # Step4: 安装依赖（--frozen-lockfile 保证构建可复现）
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # Step5: 打包
+      - name: Build package
+        run: pnpm -C packages/sdk build
+
+      # Step6: 发布到 npmjs
+      - name: Publish to npmjs
+        # 带 scope 的包名需要 --access public；tag 检出没有分支需要 --no-git-checks，见 https://github.com/pnpm/pnpm/issues/5894
+        run: pnpm -C packages/sdk publish --access public --no-git-checks
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      # Step7: 将 dist 目录压缩成 release 附件
+      - name: Package dist for release
+        run: tar -zcvf release.tgz -C packages/sdk ./dist
+
+      # Step8: 发布 release
+      - name: Release
+        uses: softprops/action-gh-release@v3 # https://github.com/softprops/action-gh-release
+        with:
+          token: ${{ secrets.GHP_TOKEN }}
+          name: ${{ github.ref_name }}
+          files: ./release.tgz
+          body: |
+            Please refer to [CHANGELOG.md](https://github.com/zxiaosi-team/${{ github.repository }}/blob/${{ github.ref_name }}/packages/sdk/CHANGELOG.md) for details.
