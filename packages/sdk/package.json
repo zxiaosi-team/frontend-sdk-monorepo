@@ -1,0 +1,49 @@
+{
+  "name": "@zxiaosi/sdk",
+  "version": "1.0.0",
+  "description": "A micro frontend kit",
+  "keywords": [
+    "micro frontend",
+    "qiankun",
+    "vite"
+  ],
+  "license": "MIT",
+  "author": "zxiaosi",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zxiaosi-team/fontend-sdk.git",
+    "directory": "sdk"
+  },
+  "files": [
+    "dist"
+  ],
+  "type": "module",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": "./dist/index.js",
+    "./package.json": "./package.json"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "scripts": {
+    "build": "tsdown",
+    "dev": "tsdown --watch"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@tsdown/css": "^0.22.4",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "es-toolkit": "^1.47.1",
+    "tsdown": "^0.22.4",
+    "typescript": "^6.0.3"
+  },
+  "peerDependencies": {
+    "react": "^18.3.1 || >=19.0.0",
+    "react-dom": "^18.3.1 || >=19.0.0",
+    "react-router-dom": "^6.30.0",
+    "zustand": "^5.0.0"
+  }
+}

@@ -1,0 +1,35 @@
+interface Props {
+  /** 是否是初始化数据 */
+  isInitData?: boolean;
+  /** 是否是懒加载 */
+  isSuspense?: boolean;
+  /** 是否是微应用加载 */
+  isMicroApp?: boolean;
+}
+
+/** 加载中组件 */
+const Loading: React.FC<Props> = ({
+  isInitData = false,
+  isSuspense = false,
+  isMicroApp = false,
+}) => {
+  return (
+    <div
+      style={
+        isInitData
+          ? {
+              width: '100%',
+              height: '100%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }
+          : {}
+      }
+    >
+      Loading...
+    </div>
+  );
+};
+
+export default Loading;
