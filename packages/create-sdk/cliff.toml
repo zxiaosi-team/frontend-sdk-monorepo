@@ -1,0 +1,101 @@
+# git-cliff 配置文件
+# https://git-cliff.org/docs/configuration
+#
+# 以 "#" 开头的行是注释。
+# 配置选项按表和键组织。
+# 更多可用选项请参阅文档。
+
+[changelog]
+# 变更日志的标题模板
+header = """
+<!-- 快捷命令： npm run changelog -- --tag xxx -->\n
+"""
+
+# 变更日志的内容模板
+# https://keats.github.io/tera/docs/#introduction
+body = """
+{% if version %}\
+    ## [{{ version | trim_start_matches(pat="v") }}](__REPO__/compare/{{ previous.version | default(value="") }}...{{ version }}) - ({{ timestamp | date(format="%Y-%m-%d") }})
+{% else %}\
+    ## [未发布]
+{% endif %}\
+{% for group, commits in commits | group_by(attribute="group") %}
+    ### {{ group | striptags | trim | upper_first }}
+    {% for commit in commits %}
+        - {% if commit.scope %}*({{ commit.scope }})* {% endif %}\
+            {% if commit.breaking %}[**破坏性变更**] {% endif %}\
+            {{ commit.message | upper_first }}\
+    {% endfor %}
+{% endfor %}\n
+"""
+
+# 变更日志的页脚模板
+footer = """
+<!-- 由 git-cliff 生成 -->
+"""
+
+# 移除内容前后的空白
+trim = true
+
+# 后处理器
+postprocessors = [
+  { pattern = '__REPO__', replace = "https://github.com/zxiaosi-team/fontend-create-sdk" }, # 替换仓库 URL
+]
+
+# 即使没有发布版本也渲染内容
+# render_always = true
+
+# 输出文件路径
+# output = "CHANGELOG.md"
+
+[git]
+# 基于 https://www.conventionalcommits.org 解析提交信息
+conventional_commits = true
+
+# 过滤掉不符合规范的提交
+filter_unconventional = true
+
+# 将提交的每一行作为单独的提交处理
+split_commits = false
+
+# 提交信息的预处理正则表达式
+commit_preprocessors = [
+  # 替换问题编号
+  #{ pattern = '$(\w+\s)?#([0-9]+)$', replace = "([#${2}](<REPO>/issues/${2}))"},
+  # 使用 https://github.com/crate-ci/typos 检查提交信息的拼写
+  # 如果拼写错误，会自动修正。
+  #{ pattern = '.*', replace_command = 'typos --write-changes -' },
+]
+
+# 提交信息的解析和分组规则
+commit_parsers = [
+  { message = "^feat", group = "🚀 新功能" },
+  { message = "^fix", group = "🐛 Bug 修复" },
+  { message = "^docs", group = "📚 文档更新" },
+  { message = "^style", group = "🎨 代码样式" },
+  { message = "^refactor", group = "🚜 代码重构" },
+  { message = "^perf", group = "⚡ 性能优化" },
+  { message = "^test", group = "🧪 测试相关" },
+  { message = "^build", group = "📦 构建系统" },
+  { message = "^ci", group = "🔧 CI 配置" },
+  { message = "^chore", group = "⚙️ 杂项任务" },
+  { message = "^revert", group = "◀️ 回滚变更" },
+  { message = "^security", group = "🛡️ 安全相关" },
+  { message = "^wip", group = "🚧 进行中" },
+  { message = "^deps", group = "📦 依赖更新" },
+  { message = "^init", group = "🎉 初始化" },
+  { message = "^config", group = "⚙️ 配置变更" },
+  { message = "^release", group = "🏷️ 版本发布", skip = true },
+  { message = "^hotfix", group = "🔥 紧急修复" },
+  { message = "^breaking", group = "💥 破坏性变更" },
+  { message = ".*", group = "💼 其他" },
+]
+
+# 过滤掉未被提交解析器匹配的提交
+filter_commits = false
+
+# 按拓扑顺序排序标签
+topo_order = false
+
+# 按提交时间排序（oldest 或 newest）
+sort_commits = "oldest"

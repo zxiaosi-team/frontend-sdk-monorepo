@@ -1,0 +1,62 @@
+# This workflow will run tests using node and then publish a package to GitHub Packages when a release is created
+# For more information see: https://docs.github.com/en/actions/publishing-packages/publishing-nodejs-packages
+# 参考：https://juejin.cn/post/7412672720826564671
+
+name: Publish And Release
+
+# 当push v*的时候会运行这个action，如：在本地执行git push origin v1.1.0，会运行这个workflow
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    steps:
+      # Step1: 检出源码
+      - name: Checkout
+        # 使用的第三方action名称，其实是仓库地址的缩写，省略了github.com/前缀，完整是https://github.com/actions/checkout/tree/v4/
+        uses: actions/checkout@v5
+
+      # Step2: 安装pnpm环境
+      - name: Install pnpm
+        uses: pnpm/action-setup@v6
+
+      # Step3: 安装Nodejs环境并打包
+      - name: Setup nodejs and build package
+        uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          # 设置要发布到哪个npm镜像仓库，这里指向npmjs
+          registry-url: https://registry.npmjs.org/
+          cache: 'pnpm'
+
+      # Step4：安装依赖
+      - run: pnpm install
+
+      # Step5：打包
+      - run: pnpm run build
+
+      # Step6：发布到npmjs
+      - name: Publish to npmjs
+        # 这里用了带scope的包名防止和其他公共包冲突，因此需要加上--access public
+        # 因为当前检出的是tag的代码，没有分支，因此会报错，需要加上--no-git-checks，见https://github.com/pnpm/pnpm/issues/5894
+        run: npm publish --access public --no-git-checks
+        env:
+          # 这里环境变量写配置在仓库secret的npm access token的名字
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      # Step7：将lib目录压缩成一个文件，用于release附件
+      - run: tar -zcvf release.tgz ./dist/
+
+      # Step8: 发布release
+      - name: Release
+        uses: softprops/action-gh-release@v3 # https://github.com/softprops/action-gh-release
+        with:
+          # 这里环境变量写配置在仓库secret的GitHub Personal access token的名字
+          token: ${{ secrets.GHP_TOKEN }}
+          name: ${{ github.ref_name }}
+          files: ./release.tgz
+          body: |
+            Please refer to [CHANGELOG.md](https://github.com/zxiaosi-team/fontend-create-sdk/blob/${{ github.ref_name }}/CHANGELOG.md) for details.
